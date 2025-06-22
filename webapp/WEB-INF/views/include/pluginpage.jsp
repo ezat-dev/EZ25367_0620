@@ -218,8 +218,8 @@ function pageObject(paramKey){
 			"c02":["/chunil/condition/machinePartTemp","열전대 교체이력"],
 			"c03":["/chunil/condition/machineLiquidManage","온도조절계 보정현황"],
 			"c04":["/chunil/condition/dailyCheck","일상점검일지"],
-			"c05":"",
-			"c06":"",
+			"c05":["/chunil/condition/standardDoc","관리계획서 및 작업 표준서"],
+			"c06":["/chunil/condition/inputProduct","낙하품 관리"],
 			"c07":"",
 			//품질관리
 			"d01":["/chunil/quality/tempUniformity","온도균일성 조사보고서"],
@@ -231,8 +231,8 @@ function pageObject(paramKey){
 			"d07":"",
 			//기준관리
 			"e01":["/chunil/standardManagement/notOperational","비가동현황"],
-			"e02":["/chunil/standardManagement/userReg","사용자등록"],
-			"e03":["/chunil/standardManagement/userAuth","사용자 권한"],
+			"e02":["/chunil/user/userInsert","사용자등록"],
+			"e03":["/chunil/user/userPermission","사용자 권한"],
 			"e04":"",
 			"e05":"",
 			"e06":"",

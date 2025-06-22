@@ -705,59 +705,49 @@ public class UserController {
         return userService.standardDocList(users);
     }
 
-    @RequestMapping(value = "/user/standardDoc/insert", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> standardDocSaves(
-        @RequestParam(value = "idx", required = false) String idx,
-        @RequestParam("cr_date") String cr_date,
-        @RequestParam("mch_name") String mch_name,
-        @RequestParam(value = "memo", required = false) String memo,
-        @RequestParam(value = "box1", required = false) MultipartFile box1,
-        @RequestParam(value = "box2", required = false) MultipartFile box2,
-        @RequestParam(value = "box3", required = false) MultipartFile box3,
-        @RequestParam(value = "box4", required = false) MultipartFile box4
-    ) {
-        Map<String, Object> rtnMap = new HashMap<>();
-        String basePath = "D:/GEOMET양식/문서관리/";
-
-        try {
-            Users users = new Users();
-            users.setIdx(idx);
-            users.setCr_date(cr_date);
-            users.setMch_name(mch_name);
-            users.setMemo(memo);
-
-            if (box1 != null && !box1.isEmpty()) {
-                String origName = box1.getOriginalFilename();
-                box1.transferTo(new File(basePath + origName));
-                users.setBox1(origName);
-            }
-            if (box2 != null && !box2.isEmpty()) {
-                String origName = box2.getOriginalFilename();
-                box2.transferTo(new File(basePath + origName));
-                users.setBox2(origName);
-            }
-            if (box3 != null && !box3.isEmpty()) {
-                String origName = box3.getOriginalFilename();
-                box3.transferTo(new File(basePath + origName));
-                users.setBox3(origName);
-            }
-            if (box4 != null && !box4.isEmpty()) {
-                String origName = box4.getOriginalFilename();
-                box4.transferTo(new File(basePath + origName));
-                users.setBox4(origName);
-            }
-
-            userService.standardDocSaves(users);
-
-            rtnMap.put("result", "success");
-        } catch (Exception e) {
-            e.printStackTrace();
-            rtnMap.put("result", "fail");
-            rtnMap.put("message", "DB 저장 실패: " + e.getMessage());
-        }
-        return rtnMap;
-    }
+	/*
+	 * @RequestMapping(value = "/user/standardDoc/insert", method =
+	 * RequestMethod.POST)
+	 * 
+	 * @ResponseBody public Map<String, Object> standardDocSaves(
+	 * 
+	 * @RequestParam(value = "idx", required = false) String idx,
+	 * 
+	 * @RequestParam("cr_date") String cr_date,
+	 * 
+	 * @RequestParam("mch_name") String mch_name,
+	 * 
+	 * @RequestParam(value = "memo", required = false) String memo,
+	 * 
+	 * @RequestParam(value = "box1", required = false) MultipartFile box1,
+	 * 
+	 * @RequestParam(value = "box2", required = false) MultipartFile box2,
+	 * 
+	 * @RequestParam(value = "box3", required = false) MultipartFile box3,
+	 * 
+	 * @RequestParam(value = "box4", required = false) MultipartFile box4 ) {
+	 * Map<String, Object> rtnMap = new HashMap<>(); String basePath =
+	 * "D:/GEOMET양식/문서관리/";
+	 * 
+	 * try { Users users = new Users(); users.setIdx(idx);
+	 * users.setCr_date(cr_date); users.setMch_name(mch_name); users.setMemo(memo);
+	 * 
+	 * if (box1 != null && !box1.isEmpty()) { String origName =
+	 * box1.getOriginalFilename(); box1.transferTo(new File(basePath + origName));
+	 * users.setBox1(origName); } if (box2 != null && !box2.isEmpty()) { String
+	 * origName = box2.getOriginalFilename(); box2.transferTo(new File(basePath +
+	 * origName)); users.setBox2(origName); } if (box3 != null && !box3.isEmpty()) {
+	 * String origName = box3.getOriginalFilename(); box3.transferTo(new
+	 * File(basePath + origName)); users.setBox3(origName); } if (box4 != null &&
+	 * !box4.isEmpty()) { String origName = box4.getOriginalFilename();
+	 * box4.transferTo(new File(basePath + origName)); users.setBox4(origName); }
+	 * 
+	 * userService.standardDocSaves(users);
+	 * 
+	 * rtnMap.put("result", "success"); } catch (Exception e) { e.printStackTrace();
+	 * rtnMap.put("result", "fail"); rtnMap.put("message", "DB 저장 실패: " +
+	 * e.getMessage()); } return rtnMap; }
+	 */
     @RequestMapping(value = "/user/standardDoc/del", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> standardDocDel(@RequestBody Users users) {

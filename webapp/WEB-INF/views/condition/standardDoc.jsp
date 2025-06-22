@@ -268,17 +268,8 @@
 			
 			<label class="daylabel">설비명 :</label>
 			<select name="mch_name"id="mch_name" class="dayselect" style="width: 20%; font-size: 15px; height: 34px; text-align: center; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
-			    <option value="">전체</option>
-                <option value="G-800">G-800</option>
-                <option value="G-600">G-600</option>
-                <option value="k_balck">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅 1호기">이코팅 1호기</option>
-                <option value="이코팅 2호기">이코팅 2호기</option>
-                <option value="세척 공통">세척 공통</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
+			    <option value="열처리 연속로">열처리 연속로</option>
+
 			</select>
 
 
@@ -324,16 +315,7 @@
             <label>설비</label>
 			
 			<select name="mch_name" class="daySet" style="text-align: left;">
-			    <option value="G-800">G-800</option>
-			    <option value="G-600">G-600</option>
-			    <option value="k_balck">K-BLACK</option>
-			    <option value="공용설비">공용설비</option>
-			    <option value="방청">방청</option>
-			    <option value="이코팅 1호기">이코팅 1호기</option>
-			    <option value="이코팅 2호기">이코팅 2호기</option>
-			    <option value="세척 공통">세척 공통</option>
-			    <option value="세척 1호기">세척 1호기</option>
-			    <option value="세척 2호기">세척 2호기</option>
+			    <option value="열처리 연속로">열처리 연속로</option>
 			</select>
             
   
@@ -349,8 +331,12 @@
 			<label>설비점검일지</label>
 			<input type="file" name="box3" id="fileInput" placeholder="설비점검일지">
 			<span id="box3FileName"></span>
-			<label>MSDS</label>
+			
+			
+		<!-- 	<label>MSDS</label>
 			<input type="file" name="box4" id="fileInput" placeholder="MSDS">
+			 -->
+			
 			<span id="box4FileName"></span>
             <label>비고</label>
 			 <input type="text"  name="memo" placeholder="비고 입력">
@@ -362,142 +348,48 @@
     </div>
 </div>
 
+
+<div id="pdfViewerModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+     background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
+  <div style="position:relative; width:80%; height:90%; background:#fff; border-radius:8px; overflow:hidden;">
+    <button id="closePdfModal" 
+            style="position:absolute; top:8px; right:8px; z-index:10; padding:4px 8px;">✕ 닫기</button>
+    <iframe id="pdfFrame" 
+            style="width:100%; height:100%; border:none;" 
+            src=""></iframe>
+  </div>
+</div>
+
 <script>
-let now_page_code = "i01";
+let now_page_code = "c05";
 let dataTable;
 let selectedRow;
 
-$(document).ready(function () {
-    var today = new Date();
-    var yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
 
-    function formatDate(date) {
-        var year = date.getFullYear();
-        var month = ("0" + (date.getMonth() + 1)).slice(-2);
-        var day = ("0" + date.getDate()).slice(-2);
-        return year + "-" + month + "-" + day;
+function pdfLinkFormatter(cell) {
+    var fn = cell.getValue();
+    if (!fn) return "";
+    // 1) 기본 인코딩
+    var enc = encodeURIComponent(fn);
+    // 2) 괄호까지 안전하게 인코딩
+    enc = enc.replace(/\(/g, '%28').replace(/\)/g, '%29');
+    return '<a href="javascript:void(0);" onclick="openPdf(\'' + enc + '\')">' + fn + '</a>';
+}
+
+// PDF 팝업 열기
+function openPdf(encodedName) {
+    console.log(">>> openPdf called with:", encodedName);
+    if (!encodedName) {
+        alert("파일명이 없습니다!");
+        return;
     }
+    // iframe src 세팅
+    document.getElementById('pdfFrame').src = 
+        '/chunil/download_standardDoc?filename=' + encodedName;
+    document.getElementById('pdfViewerModal').style.display = 'flex';
+}
 
-    $("#startDate").val(formatDate(yesterday));
-    $("#endDate").val(formatDate(today));
-
-    getDataList();
-
-    $(".insert-button").click(function () {
-        $("#corrForm")[0].reset();
-        $("#idx").val("");
-      
-        var today = new Date();
-        var year = today.getFullYear();
-        var month = ("0" + (today.getMonth() + 1)).slice(-2);
-        var day = ("0" + today.getDate()).slice(-2);
-        var todayStr = year + "-" + month + "-" + day;
-        $("input[name='cr_date']").val(todayStr);
-        $("#box1FileName").text("");
-        $("#box2FileName").text("");
-        $("#box3FileName").text("");
-        $("#box4FileName").text("");
-        let modal = $("#modalContainer");
-        modal.show();
-        modal.addClass("show");
-    });
-
-    $(".close, #closeModal").click(function () {
-        $("#modalContainer").removeClass("show").hide();
-    });
-
-    $("#mch_name").on("change", function () {
-        console.log("선택된 설비명:", $(this).val());
-    });
-
-    $(".select-button").click(function () {
-        var mch_name = $("#mch_name").val();
-        var startDate = $("#startDate").val();
-        var endDate = $("#endDate").val();
-
-        dataTable.setData("/chunil/user/standardDoc/list", {
-            mch_name: mch_name,
-            startDate: startDate,
-            endDate: endDate
-        });
-    });
-
-    $("#saveCorrStatus").click(function (event) {
-        event.preventDefault();
-
-        const formElement = document.getElementById("corrForm");
-        const formData = new FormData(formElement);
-
-        if (!formData.get("idx") || formData.get("idx").trim() === "") {
-            formData.delete("idx");
-        }
-
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ": " + pair[1]);
-        }
-
-        $.ajax({
-            url: "/chunil/user/standardDoc/insert",
-            type: "POST",
-            data: formData,
-            dataType: "json",
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                if (response.result === "success") {
-                    alert("관리계획서 및 작업 표준서 성공적으로 저장되었습니다!");
-                    $("#modalContainer").hide();
-                    getDataList();
-                } else {
-                    alert("저장 실패: " + (response.message || "알 수 없는 오류"));
-                }
-            },
-            error: function () {
-                alert("서버 오류 발생!");
-            }
-        });
-    });
-
-    $(".delete-button").click(function(event) {
-        event.preventDefault();
-
-        if (!selectedRow) {
-            alert("삭제할 행을 선택하세요.");
-            return;
-        }
-
-        var idx = selectedRow.getData().idx;
-
-        if (!idx) {
-            alert("삭제할 항목이 없습니다.");
-            return;
-        }
-
-        if (!confirm("정말 삭제하시겠습니까?")) {
-            return;
-        }
-
-        var requestData = JSON.stringify({ "idx": idx });
-
-        $.ajax({
-            url: "/chunil/user/standardDoc/del",
-            type: "POST",
-            contentType: "application/json",
-            data: requestData,
-            dataType: "json",
-            success: function(response) {
-                alert("삭제가 완료되었습니다.");
-                dataTable.replaceData();
-            },
-            error: function(xhr, status, error) {
-                alert("삭제 중 오류가 발생했습니다: " + error);
-            }
-        });
-    });
-});
-
-// getDataList 함수는 $(document).ready 바깥에 선언
+// getDataList 함수 정의
 function getDataList() {
     dataTable = new Tabulator("#dataList", {
         height: "760px",
@@ -507,109 +399,200 @@ function getDataList() {
         rowVertAlign: "middle",
         ajaxConfig: "POST",
         ajaxLoader: false,
-        ajaxURL: "/chunil/user/standardDoc/list",
+        ajaxURL: "/chunil/condition/standardDoc/list",
         ajaxParams: {
             mch_name: $("#mch_name").val() || "",
             startDate: $("#startDate").val() || "",
             endDate: $("#endDate").val() || ""
         },
-        placeholder: "조회된 데이터가 없습니다.",
+        placeholder: "데이터 없음",
         ajaxResponse: function (url, params, response) {
-            console.log("서버 응답 데이터:", response);
             return response;
         },
         columns: [
-            { title: "NO2", field: "idx", visible: false },
             { title: "No", formatter: "rownum", hozAlign: "center", width: 70, headerSort: false },
-            { title: "생성", field: "cr_date", width: 120, hozAlign: "center" },
-            { title: "설비", field: "mch_name", width: 120, hozAlign: "center" },
+            { title: "생성", field: "cr_date", hozAlign: "center", width: 120 },
+            { title: "설비", field: "mch_name", hozAlign: "center", width: 120 },
+
             {
-                title: "관리계획서", field: "box1",
-                hozAlign: "center",
-                width: 250,
-                formatter: function(cell, formatterParams, onRendered) {
-                    const fileName = cell.getValue();
-                    if (!fileName) return "";
-                    return '<a href="/chunil/download_standardDoc?filename=' +
-                        encodeURIComponent(fileName + "") +
-                        '" target="_blank">' +
-                        fileName  
-                        '</a>';
+                title: "관리계획서", field: "box1", hozAlign: "center", width: 250,
+                formatter: function (cell) {
+                    var fn = cell.getValue();
+                    if (!fn) return "";
+                    return '<a href="javascript:void(0);" onclick="openPdf(\'' + encodeURIComponent(fn) + '\')">' + fn + '</a>';
                 }
             },
             {
-                title: "작업표준서", field: "box2",
-                hozAlign: "center",
-                width: 250,
-                formatter: function(cell, formatterParams, onRendered) {
-                    const fileName = cell.getValue();
-                    if (!fileName) return "";
-                    return '<a href="/chunil/download_standardDoc?filename=' +
-                        encodeURIComponent(fileName + "") +
-                        '" target="_blank">' +
-                        fileName  
-                        '</a>';
+                title: "작업표준서", field: "box2", hozAlign: "center", width: 250,
+                formatter: function (cell) {
+                    var fn = cell.getValue();
+                    if (!fn) return "";
+                    return '<a href="javascript:void(0);" onclick="openPdf(\'' + encodeURIComponent(fn) + '\')">' + fn + '</a>';
                 }
             },
             {
-                title: "설비점검일지", field: "box3",
-                hozAlign: "center",
-                width: 250,
-                formatter: function(cell, formatterParams, onRendered) {
-                    const fileName = cell.getValue();
-                    if (!fileName) return "";
-                    return '<a href="/chunil/download_standardDoc?filename=' +
-                        encodeURIComponent(fileName + "") +
-                        '" target="_blank">' +
-                        fileName  
-                        '</a>';
+                title: "설비점검일지", field: "box3", hozAlign: "center", width: 250,
+                formatter: function (cell) {
+                    var fn = cell.getValue();
+                    if (!fn) return "";
+                    return '<a href="javascript:void(0);" onclick="openPdf(\'' + encodeURIComponent(fn) + '\')">' + fn + '</a>';
                 }
             },
             {
-                title: "MSDS", field: "box4",
-                hozAlign: "center",
-                width: 250,
-                formatter: function(cell, formatterParams, onRendered) {
-                    const fileName = cell.getValue();
-                    if (!fileName) return "";
-                    return '<a href="/chunil/download_standardDoc?filename=' +
-                        encodeURIComponent(fileName + "") +
-                        '" target="_blank">' +
-                        fileName 
-                        '</a>';
+                title: "MSDS", field: "box4", hozAlign: "center", width: 250,
+                formatter: function (cell) {
+                    var fn = cell.getValue();
+                    if (!fn) return "";
+                    return '<a href="javascript:void(0);" onclick="openPdf(\'' + encodeURIComponent(fn) + '\')">' + fn + '</a>';
                 }
             },
-            { title: "비고", field: "memo", width: 300, hozAlign: "center" }
+            { title: "비고", field: "memo", hozAlign: "center", width: 300 }
         ],
         rowClick: function (e, row) {
             $("#dataList .tabulator-row").removeClass("row_select");
             row.getElement().classList.add("row_select");
             selectedRow = row;
-            console.log("선택된 row idx:", selectedRow.getData().idx);
         },
         rowDblClick: function (e, row) {
-            const rowData = row.getData();
-            $("input[name='idx']").val(rowData.idx);
-            $("input[name='cr_date']").val(rowData.cr_date);
-            $("select[name='mch_name']").val(rowData.mch_name);
-            // 파일 input에는 값을 넣지 않는다!
-            $("input[name='memo']").val(rowData.memo);
-
-            // 파일명 표시 (있으면 "기존 파일: 파일명", 없으면 "")
-            $("#box1FileName").text(rowData.box1 ? "기존 관리계획서 : " + rowData.box1 : "");
-            $("#box2FileName").text(rowData.box2 ? "기존 작업표준서 : " + rowData.box2 : "");
-            $("#box3FileName").text(rowData.box3 ? "기존 설비점검일지 : " + rowData.box3 : "");
-            $("#box4FileName").text(rowData.box4 ? "기존 MSDS : " + rowData.box4 : "");
-
-            let modal = $("#modalContainer");
-            modal.show();
-            setTimeout(function() {
-                modal.addClass("show");
-            }, 10);
+            var d = row.getData();
+            $("input[name='idx']").val(d.idx);
+            $("input[name='cr_date']").val(d.cr_date);
+            $("select[name='mch_name']").val(d.mch_name);
+            $("input[name='memo']").val(d.memo);
+            $("#box1FileName").text(d.box1 ? "기존 관리계획서 : " + d.box1 : "");
+            $("#box2FileName").text(d.box2 ? "기존 작업표준서 : " + d.box2 : "");
+            $("#box3FileName").text(d.box3 ? "기존 설비점검일지 : " + d.box3 : "");
+            $("#box4FileName").text(d.box4 ? "기존 MSDS : " + d.box4 : "");
+            $("#modalContainer").show().addClass("show");
         }
     });
 }
 
+$(document).ready(function () {
+    // 날짜 세팅
+    var today = new Date(),
+        yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    function formatDate(date) {
+        var y = date.getFullYear(),
+            m = ("0" + (date.getMonth() + 1)).slice(-2),
+            d = ("0" + date.getDate()).slice(-2);
+        return y + "-" + m + "-" + d;
+    }
+
+    $("#startDate").val(formatDate(yesterday));
+    $("#endDate").val(formatDate(today));
+
+    getDataList();
+
+    // 모달 닫기 (PDF 뷰어)
+    $("#closePdfModal").click(function () {
+        $("#pdfViewerModal").hide();
+        $("#pdfFrame").attr("src", "");
+    });
+
+    // insert 버튼
+    $(".insert-button").click(function () {
+        $("#corrForm")[0].reset();
+        $("#idx").val("");
+        $("input[name='cr_date']").val(formatDate(today));
+        $("#box1FileName, #box2FileName, #box3FileName, #box4FileName").text("");
+        $("#modalContainer").show().addClass("show");
+    });
+
+    // modal close
+    $(".close, #closeModal").click(function () {
+        $("#modalContainer").removeClass("show").hide();
+    });
+
+    // 설비 변경 로그
+    $("#mch_name").on("change", function () {
+        console.log("선택된 설비명:", $(this).val());
+    });
+
+    // 조회 버튼
+    $(".select-button").click(function () {
+        dataTable.setData("/chunil/condition/standardDoc/list", {
+            mch_name: $("#mch_name").val(),
+            startDate: $("#startDate").val(),
+            endDate: $("#endDate").val()
+        });
+    });
+
+    // 저장 버튼 (PDF 검증)
+    $("#saveCorrStatus").click(function (event) {
+        event.preventDefault();
+        const formElement = document.getElementById("corrForm"),
+              formData = new FormData(formElement);
+
+        if (!formData.get("idx") || !formData.get("idx").trim()) {
+            formData.delete("idx");
+        }
+
+        function isPdfFile(f) {
+            return f && f.name.toLowerCase().endsWith(".pdf");
+        }
+        for (let field of ["box1", "box2", "box3", "box4"]) {
+            const f = formData.get(field);
+            if (f && f.size > 0 && !isPdfFile(f)) {
+                return alert(`[${field}] PDF 형식만 업로드 가능합니다.`);
+            }
+        }
+
+        $.ajax({
+            url: "/chunil/condition/standardDoc/insert",
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.result === "success") {
+                    alert("저장 완료");
+                    $("#modalContainer").hide();
+                    getDataList();
+                } else {
+                    alert("저장 실패: " + (res.message || "알 수 없는 오류"));
+                }
+            },
+            error: function () {
+                alert("서버 오류 발생!");
+            }
+        });
+    });
+
+    // 삭제 버튼
+    $(".delete-button").click(function (event) {
+        event.preventDefault();
+        if (!selectedRow) return alert("삭제할 행을 선택하세요.");
+        if (!confirm("정말 삭제하시겠습니까?")) return;
+
+        $.ajax({
+            url: "/chunil/condition/standardDoc/del",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ idx: selectedRow.getData().idx }),
+            dataType: "json",
+            success: function () {
+                alert("삭제 완료");
+                getDataList();
+            },
+            error: function (_, __, e) {
+                alert("삭제 중 오류: " + e);
+            }
+        });
+    });
+});
 </script>
+
+
+
+
+
+
+
+
+
 </body>
 </html>

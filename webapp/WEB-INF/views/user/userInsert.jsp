@@ -276,7 +276,7 @@
 
 
 <script>
-let now_page_code = "h03";
+let now_page_code = "e02";
 var dataTable;
 var selectedRowData = null;
 

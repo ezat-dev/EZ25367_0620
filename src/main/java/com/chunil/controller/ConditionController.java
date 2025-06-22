@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -13,6 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -807,9 +810,9 @@ public class ConditionController {
     
     
     //0622 관리계획서, 작업표준서 standardPlan.jsp
-    @RequestMapping(value= "/condition/standardPlan", method = RequestMethod.GET)
+    @RequestMapping(value= "/condition/standardDoc", method = RequestMethod.GET)
     public String standardDocManage(Model model) {
-        return "/condition/standardPlan.jsp"; // 
+        return "/condition/standardDoc.jsp"; // 
     }	
     
     @RequestMapping(value = "/condition/standardDoc/list", method = RequestMethod.POST)
@@ -821,7 +824,10 @@ public class ConditionController {
          */
         return conditionService.standardDocList(condition);
     }
-
+    
+    
+    
+    
     @RequestMapping(value = "/condition/standardDoc/insert", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> standardDocSaves(
@@ -834,40 +840,61 @@ public class ConditionController {
         @RequestParam(value = "box3", required = false) MultipartFile box3,
         @RequestParam(value = "box4", required = false) MultipartFile box4
     ) {
+    	
+    	System.out.println("=== standardDocSaves called ===");
+        System.out.println("idx   : " + idx);
+        System.out.println("cr_date : " + cr_date);
+        System.out.println("mch_name: " + mch_name);
+        System.out.println("memo    : " + memo);
+        System.out.println("box1    : " + (box1    != null ? box1.getOriginalFilename() : "null"));
+        System.out.println("box2    : " + (box2    != null ? box2.getOriginalFilename() : "null"));
+        System.out.println("box3    : " + (box3    != null ? box3.getOriginalFilename() : "null"));
+        System.out.println("box4    : " + (box4    != null ? box4.getOriginalFilename() : "null"));
+        System.out.println("==============================");
+        
+        
         Map<String, Object> rtnMap = new HashMap<>();
-        String basePath = "D:/천일_양식/문서관리/";
+        String basePath = "D:/천일_양식/작업표준서/";
 
         try {
+            // 도메인 객체 세팅
             Condition condition = new Condition();
-            condition.setIdx(Integer.valueOf(idx));
+            if (idx != null && !idx.trim().isEmpty()) {
+                condition.setIdx(Integer.valueOf(idx));
+            }
             condition.setCr_date(cr_date);
             condition.setMch_name(mch_name);
             condition.setMemo(memo);
 
-            if (box1 != null && !box1.isEmpty()) {
-                String origName = box1.getOriginalFilename();
-                box1.transferTo(new File(basePath + origName));
-                condition.setBox1(origName);
-            }
-            if (box2 != null && !box2.isEmpty()) {
-                String origName = box2.getOriginalFilename();
-                box2.transferTo(new File(basePath + origName));
-                condition.setBox2(origName);
-            }
-            if (box3 != null && !box3.isEmpty()) {
-                String origName = box3.getOriginalFilename();
-                box3.transferTo(new File(basePath + origName));
-                condition.setBox3(origName);
-            }
-            if (box4 != null && !box4.isEmpty()) {
-                String origName = box4.getOriginalFilename();
-                box4.transferTo(new File(basePath + origName));
-                condition.setBox4(origName);
-            }
+            // PDF 검증 헬퍼
+            BiConsumer<MultipartFile, Consumer<String>> saveFile = (file, setter) -> {
+                if (file != null && !file.isEmpty()) {
+                    String origName = file.getOriginalFilename().toLowerCase();
+                    if (!origName.endsWith(".pdf")) {
+                        throw new IllegalArgumentException("업로드 파일은 PDF 형식만 가능합니다: " + origName);
+                    }
+                    try {
+                        file.transferTo(new File(basePath + origName));
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                    setter.accept(origName);
+                }
+            };
+
+            saveFile.accept(box1, condition::setBox1);
+            saveFile.accept(box2, condition::setBox2);
+            saveFile.accept(box3, condition::setBox3);
+            saveFile.accept(box4, condition::setBox4);
+
 
             conditionService.standardDocSaves(condition);
 
             rtnMap.put("result", "success");
+        } catch (IllegalArgumentException e) {
+            // PDF 외 파일일 경우
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             rtnMap.put("result", "fail");
@@ -875,6 +902,8 @@ public class ConditionController {
         }
         return rtnMap;
     }
+    
+    
     @RequestMapping(value = "/condition/standardDoc/del", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> standardDocDel(@RequestBody Condition condition) {
@@ -892,40 +921,50 @@ public class ConditionController {
     }
 
     @RequestMapping(value = "/download_standardDoc", method = RequestMethod.GET)
-    public void downloadExcel(@RequestParam("filename") String filename,
-                              HttpServletResponse response) throws IOException {
+    public void downloadExcel(
+            @RequestParam("filename") String filename,
+            HttpServletResponse response) throws IOException {
 
-        String baseDir = "D:/천일_양식/문서관리/";
+    	
+    	System.out.println(">>> download_standardDoc called");
+        System.out.println("Received filename: " + filename);
+        System.out.println("-----------------------------");
+    	
+        String baseDir = "D:/천일_양식/작업표준서/";
 
-       
         if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
         File file = new File(baseDir + filename);
-      
-        if (!file.exists()) {
+        if (!file.exists() || !file.isFile()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        String mimeType = Files.probeContentType(file.toPath());
+        boolean isPdf = filename.toLowerCase().endsWith(".pdf");
+
+        String mimeType = isPdf
+                ? "application/pdf"
+                : Files.probeContentType(file.toPath());
         if (mimeType == null) {
             mimeType = "application/octet-stream";
         }
         response.setContentType(mimeType);
         response.setContentLengthLong(file.length());
 
-
+        // 파일명 인코딩
         String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
 
+        String disposition = (isPdf ? "inline" : "attachment")
+                + "; filename*=UTF-8''" + encodedFilename;
+        response.setHeader("Content-Disposition", disposition);
 
-        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
-
+        // 파일 스트림 전송
         try (FileInputStream fis = new FileInputStream(file);
              OutputStream os = response.getOutputStream()) {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
             int len;
             while ((len = fis.read(buffer)) != -1) {
                 os.write(buffer, 0, len);
@@ -933,9 +972,13 @@ public class ConditionController {
             os.flush();
         }
     }
+
     
-    
-    
+    //0622 낙하품관리 standardPlan.jsp
+    @RequestMapping(value= "/condition/inputProduct", method = RequestMethod.GET)
+    public String inputProduct(Model model) {
+        return "/condition/inputProduct.jsp"; // 
+    }	
     
 	
 }
