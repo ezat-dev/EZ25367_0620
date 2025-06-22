@@ -4,30 +4,30 @@
 <html lang="ko">
 
 <!-- 제이쿼리홈페이지 js -->
-<script type="text/javascript" src="/geomet/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/chunil/js/jquery-3.7.1.min.js"></script>
 
 <!-- Tabulator 테이블 -->
-<script type="text/javascript" src="/geomet/js/tabulator/tabulator.js"></script>
-<link rel="stylesheet" href="/geomet/css/tabulator/tabulator_simple.css">
+<script type="text/javascript" src="/chunil/js/tabulator/tabulator.js"></script>
+<link rel="stylesheet" href="/chunil/css/tabulator/tabulator_simple.css">
 
 <!-- moment -->
-<script type="text/javascript" src="/geomet/js/moment/moment.min.js"></script>
+<script type="text/javascript" src="/chunil/js/moment/moment.min.js"></script>
 
 <!-- 화면캡쳐용 -->
-<script type="text/javascript" src="/geomet/js/html2canvas.js"></script>
+<script type="text/javascript" src="/chunil/js/html2canvas.js"></script>
 
 
 <!-- 하이차트 -->
-<script type="text/javascript" src="/geomet/js/highchart/highcharts.js"></script>
-<script type="text/javascript" src="/geomet/js/highchart/exporting.js"></script>
-<script type="text/javascript" src="/geomet/js/highchart/export-data.js"></script>
-<script type="text/javascript" src="/geomet/js/highchart/data.js"></script>
+<script type="text/javascript" src="/chunil/js/highchart/highcharts.js"></script>
+<script type="text/javascript" src="/chunil/js/highchart/exporting.js"></script>
+<script type="text/javascript" src="/chunil/js/highchart/export-data.js"></script>
+<script type="text/javascript" src="/chunil/js/highchart/data.js"></script>
 
 
 <!-- Air Datepicker -->
-<script type="text/javascript" src="/geomet/js/airdatepicker/datepicker.min.js"></script>
-<script type="text/javascript" src="/geomet/js/airdatepicker/datepicker.ko.js"></script>
-<link rel="stylesheet" href="/geomet/css/airdatepicker/datepicker.min.css"> 
+<script type="text/javascript" src="/chunil/js/airdatepicker/datepicker.min.js"></script>
+<script type="text/javascript" src="/chunil/js/airdatepicker/datepicker.ko.js"></script>
+<link rel="stylesheet" href="/chunil/css/airdatepicker/datepicker.min.css"> 
 
 
 <style>
@@ -197,84 +197,63 @@ function rpImagePopup() {
 function pageObject(paramKey){
 	//console.log("받은 키값 : "+paramKey);
 	var obj = {
-			"a01":["/geomet/machine/allMonitoring","통합 모니터링"],
-			"a02":["/geomet/machine/detailMonitoring","설비별 모니터링"],
-			"a03":["/geomet/machine/alarmMonitoring","경보 모니터링"],
-			"a04":["/geomet/machine/alarmList","경보 발생빈도"],
-			"a05":["/geomet/machine/tempMonitoring","온도경향 모니터링"],
+			//모니터링
+			"a01":["/chunil/monitoring/integrationMonitoring","통합 모니터링"],
+			"a02":["/chunil/monitoring/trend","트랜드"],
+			"a03":["/chunil/monitoring/alarm","알람현황"],
+			"a04":"",
+			"a05":"",
 			"a06":"",
 			"a07":"",
-			"b01":["/geomet/work/machinePerformStatus","설비별 생산실적"],
-			"b02":["/geomet/work/machineEfficStatus","설비효율 관리"],
-			"b03":["/geomet/work/monitoringStatus","생산모니터링 현황"],
-			"b04":["/geomet/work/workDailyReport","작업일보"],
-			"b05":["/geomet/work/inventoryStatus","재고관리(약품)"],
-			"b06":"",
+			//생산관리
+			"b01":["/chunil/productionManagement/integrationProduction","종합 생산현황"],
+			"b02":["/chunil/productionManagement/machineEfficiency","설비 효율현황"],
+			"b03":["/chunil/productionManagement/alarmRecord","알람이력"],
+			"b04":["/chunil/productionManagement/alarmFrequency","알람발생빈도"],
+			"b05":["/chunil/machine/spareStatus","SPARE 관리"],
+			"b06":["/chunil/productionManagement/heatTreatment","열처리 작업이력"],
 			"b07":"",
-			"c01":["/geomet/condition/corrStatus","TC/조절계 이력"],
-			"c02":["/geomet/condition/machinePartTemp","설비별 조건관리"],
-			"c03":["/geomet/condition/machineLiquidManage","설비별 관리일지"],
-			"c04":["/geomet/condition/dailyCheck","일상점검일지"],
-			"c05":["/geomet/condition/divisionWeight","기준 정보 관리"],
+			//조건관리
+			"c01":["/chunil/condition/corrStatus","기준정보관리"],
+			"c02":["/chunil/condition/machinePartTemp","열전대 교체이력"],
+			"c03":["/chunil/condition/machineLiquidManage","온도조절계 보정현황"],
+			"c04":["/chunil/condition/dailyCheck","일상점검일지"],
+			"c05":"",
 			"c06":"",
 			"c07":"",
-			"d01":["/geomet/quality/tusTest","온도균일성 테스트"],
-			"d02":["/geomet/quality/resistTest","테스트/시험정보"],
-			"d03":["/geomet/quality/inTest","수입검사"],
-			"d04":["/geomet/quality/liquidAnalyze","액 분석 관리"],
-			"d05":["/geomet/quality/nonProductManage","부적합품 관리"],
+			//품질관리
+			"d01":["/chunil/quality/tempUniformity","온도균일성 조사보고서"],
+			"d02":["/chunil/quality/heatTreatingOil","열처리유 성상분석"],
+			"d03":["/chunil/quality/fProof","F/PROOF"],
+			"d04":["/chunil/quality/cpk","Cpk"],
+			"d05":["/chunil/quality/ppk","Ppk"],
 			"d06":"",
 			"d07":"",
-			"e01":["/geomet/user/planManage","자격인증관리"],
-			"e02":["/geomet/user/workerManage","작업자 근무현황"],
-			"e03":["/geomet/user/carManage","지게차,청소차 점검일지"],
-			"e04":["/geomet/user/checkManage","유해화학물질 점검일지"],
-			"e05":["/geomet/user/userPermission","사용자 권한부여"],
-			"e06":["/geomet/user/userInsert","사용자 등록"],
+			//기준관리
+			"e01":["/chunil/standardManagement/notOperational","비가동현황"],
+			"e02":["/chunil/standardManagement/userReg","사용자등록"],
+			"e03":["/chunil/standardManagement/userAuth","사용자 권한"],
+			"e04":"",
+			"e05":"",
+			"e06":"",
 			"e07":"",
-			"f01":["/geomet/work/inputControlStatus","생산설비 시간 정보"],
-			"f02":["/geomet/work/machineRealStatus","투입제어 및 모니터링"],
+
+			//======안씀 여분
+			"f01":"",
+			"f02":"",
 			"f03":"",
 			"f04":"",
 			"f05":"",
 			"f06":"",
 			"f07":"",
-			"g01":["/geomet/work/lotReportStatus","LOT 보고서"],
-			"g02":["/geomet/work/workConditionStatus","생산조건 모니터링"],
+			"g01":"",
+			"g02":"",
 			"g03":"",
 			"g04":"",
 			"g05":"",
 			"g06":"",
 			"g07":"",
-			"h01":"",
-			"h02":"",
-			"h03":"",
-			"h04":"",
-			"h05":["/geomet/machine/spareStatus","스페어부품 관리"],
-			"h06":"",
-			"h07":"",
-			"i01":"",
-			"i02":"",
-			"i03":"",
-			"i04":"",
-			"i05":"",
-			"i06":"",
-			"i07":"",
-			"j01":["/geomet/agvwash/missionCount","AGV 미션수행횟수"],
-			"j02":["/geomet/agvwash/errorCount","AGV 오류발생 횟수"],
-			"j03":["/geomet/agvwash/batteryStatus","AGV 배터리 소모이력"],
-			"j04":["/geomet/agvwash/workOrderStatus","AGV 작업지시 조회"],
-			"j05":"",
-			"j06":"",
-			"j07":"",
-			"k01":["/geomet/agvwash/washList","세척투입리스트"],
-			"k02":["/geomet/agvwash/washInput","세척투입"],
-			"k03":["/geomet/agvwash/washShotWorkPerform","세척,쇼트 일 생산량"],
-			"k04":["/geomet/agvwash/washShotWaitList","세척,쇼트 예약상태"],
-			"k05":["/geomet/agvwash/workOrderList","작업지시 조회"],
-			"k06":["/geomet/agvwash/lineInOutList","라인별 입출고이력"],
-			"k07":["/geomet/agvwash/machineWorkPerform","설비별 작업실적"],
-			"k08":["/geomet/agvwash/lineUseManage","라인별 사용유무관리"],
+
 			
 	};
 	
@@ -287,7 +266,7 @@ function pageObject(paramKey){
 
 /* $(window).on("load", function () {
     $.ajax({
-        url: "/geomet/user/equipment_name_select",
+        url: "/chunil/user/equipment_name_select",
         type: "POST",
         dataType: "json",
         success: function (response) {
@@ -320,7 +299,7 @@ let userPermissions = {};
 
 function userInfoList(now_page_code) {
     $.ajax({
-        url: '/geomet/user/info',
+        url: '/chunil/user/info',
         type: 'POST',
         contentType: 'application/json',
         dataType: 'json',

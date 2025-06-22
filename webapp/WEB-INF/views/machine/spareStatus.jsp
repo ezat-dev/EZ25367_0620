@@ -206,22 +206,22 @@
             </select>
 			</div>
                 <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                    <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
                 <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
                 <button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
                 
                 
                 <button class="excel-download-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀다운로드
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀다운로드
                 </button>
                 
                 <button class="excel-upload-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀업로드
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀업로드
                 </button>
                 <input type="file" id="fileInput" style="display: none;">
                 
@@ -328,7 +328,7 @@
       rowVertAlign: "middle",
       headerHozAlign: 'center',
       ajaxConfig: { method: 'GET' },
-      ajaxURL: "/geomet/machine/spareStatus/list",
+      ajaxURL: "/chunil/machine/spareStatus/list",
       ajaxParams: { mch_name: "ALL" },
       
       ajaxResponse: function(url, params, response) {
@@ -398,7 +398,7 @@
 
     $('.select-button').click(function() {
       var sel = $('.dayselect').val();
-      dataTable.setData("/geomet/machine/spareStatus/list", { mch_name: sel });
+      dataTable.setData("/chunil/machine/spareStatus/list", { mch_name: sel });
     });
 
     $('.insert-button').click(function() {
@@ -415,7 +415,7 @@
       if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
 
       $.ajax({
-        url: "/geomet/machine/spareStatus/delete",
+        url: "/chunil/machine/spareStatus/delete",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ no: selectedRowData.no }),
@@ -423,7 +423,7 @@
         	if(res.result === true){
           alert('삭제되었습니다.');
           var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/machine/spareStatus/list", { mch_name: currentFilter });
+          dataTable.setData("/chunil/machine/spareStatus/list", { mch_name: currentFilter });
           selectedRowData = null;
         	}else{
         		alert("삭제 실패했습니다.")
@@ -446,7 +446,7 @@
         formData.append('no', selectedRowData.no);
       }
       $.ajax({
-        url: "/geomet/machine/spareStatus/insert",
+        url: "/chunil/machine/spareStatus/insert",
         type: "POST",
         data: formData,
         processData: false,
@@ -456,7 +456,7 @@
         		 alert("저장되었습니다!");
                  $('#modalContainer').hide();
                  var currentFilter = $('.dayselect').val() || 'ALL';
-                 dataTable.setData("/geomet/machine/spareStatus/list", { mch_name: currentFilter });
+                 dataTable.setData("/chunil/machine/spareStatus/list", { mch_name: currentFilter });
                  selectedRowData = null;
                }else {
             alert("저장에 실패했습니다.");
@@ -490,7 +490,7 @@
        formData.append("file", file);
 
        $.ajax({
-           url: "/geomet/machine/spare/uploadFile",
+           url: "/chunil/machine/spare/uploadFile",
            type: "POST",
            data: formData,
            contentType: false,
@@ -500,7 +500,7 @@
                alert("엑셀 업로드가 완료되었습니다.");
                $('#modalContainer').hide();
                var currentFilter = $('.dayselect').val() || 'ALL';
-               dataTable.setData("/geomet/machine/spareStatus/list", { mch_name: currentFilter });
+               dataTable.setData("/chunil/machine/spareStatus/list", { mch_name: currentFilter });
                selectedRowData = null;
                console.log(response);
                getDataList();

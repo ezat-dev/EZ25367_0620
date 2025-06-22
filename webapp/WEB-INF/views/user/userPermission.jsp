@@ -182,7 +182,7 @@ $(function(){
 	    }
 
 	    $.ajax({
-	        url: '/geomet/user/userPermission/update',
+	        url: '/chunil/user/userPermission/update',
 	        type: 'POST',
 	        data: formData,
 	        processData: false,
@@ -209,7 +209,7 @@ $(function(){
 		  reactiveData: true,
 		  ajaxConfig: { method: 'POST' },
 		  ajaxLoader: false,
-		  ajaxURL: '/geomet/user/userPermission/userSelect',
+		  ajaxURL: '/chunil/user/userPermission/userSelect',
 		  ajaxResponse: function(url, params, response){
 			  console.log('✅ ajaxResponse 응답:', response.data);
 		    return response.data;
@@ -244,7 +244,7 @@ $(function(){
 	  var code = $('#user_code').val();
 	  console.log('user_code 전송 값:', code); 
 	  $.post(
-	    '/geomet/user/userPermission/userSelectPermission',
+	    '/chunil/user/userPermission/userSelectPermission',
 	    { user_code: code },
 	    function(result){
 	      var data = result.data || {};
@@ -269,7 +269,7 @@ $(document).on('click', '.saveAut', function(){
   }
 
   $.ajax({
-    url: '/geomet/user/userPermission/update',
+    url: '/chunil/user/userPermission/update',
     type: 'POST',
     data: formData,
     processData: false,

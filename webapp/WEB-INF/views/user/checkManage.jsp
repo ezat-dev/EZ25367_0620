@@ -268,16 +268,16 @@
 		
 			</div>
                 <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                    <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
       <!--      <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button> -->
                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
 <!--                 <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
+                    <img src="/chunil/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
                 </button> -->
             </div>
               
@@ -404,7 +404,7 @@
             });
 
             $.ajax({
-                url: "/geomet/user/CheckManage/insert",
+                url: "/chunil/user/CheckManage/insert",
                 type: "POST",
                 data: cleanCarForm,
                 dataType: "json",
@@ -439,7 +439,7 @@
             },
             ajaxConfig: "POST",
             ajaxLoader: false,
-            ajaxURL: "/geomet/user/CheckManage/List",
+            ajaxURL: "/chunil/user/CheckManage/List",
             ajaxParams: {
                 ck_date: monthSet_val
             },

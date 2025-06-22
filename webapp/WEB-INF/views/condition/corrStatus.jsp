@@ -189,16 +189,16 @@
             </select>
 			</div>
                 <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                    <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
 <!--                 <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button> -->
                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
 <!--         		<button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button> -->
 
             </div>
@@ -328,7 +328,7 @@
 	            endDate: endDate
 	        });
 	
-	        dataTable.setData("/geomet/condition/corrStatus/list", {
+	        dataTable.setData("/chunil/condition/corrStatus/list", {
 	            "equipment_name": equipmentName,
 	            "startDate": startDate,
 	            "endDate": endDate,
@@ -350,7 +350,7 @@
         	    headerHozAlign: "center",
         	    ajaxConfig: "POST",
         	    ajaxLoader: false,
-        	    ajaxURL: "/geomet/condition/corrStatus/list",
+        	    ajaxURL: "/chunil/condition/corrStatus/list",
         	    ajaxProgressiveLoad: "scroll",
         	    ajaxParams: {
         	        "equipment_name": $("#equipment_name").val() || "",
@@ -427,7 +427,7 @@
                 });
 
                 $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
+                    url: "/chunil/condition/corrStatus/insert",
                     type: "POST",
                     data: corrForm,
                     dataType: "json",
@@ -480,7 +480,7 @@
             console.log("전송된 데이터:", requestData);
 
             $.ajax({
-                url: "/geomet/condition/corrStatus/del",
+                url: "/chunil/condition/corrStatus/del",
                 type: "POST",
                 contentType: "application/json",
                 data: requestData,
@@ -516,7 +516,7 @@
           	  
               
             $.ajax({
-                url: "/geomet/condition/corrStatus/excel",
+                url: "/chunil/condition/corrStatus/excel",
                 type: "post",
                 data: {
                     equipment_name: equipmentName,
@@ -526,7 +526,7 @@
                 dataType: "json",
                 success: function (result) {
                     console.log(result);
-                    alert("D:\\GEOMET양식\\T/C조절 저장 완료되었습니다.");
+                    alert("D:\\chunil양식\\T/C조절 저장 완료되었습니다.");
                 },
                 error: function (xhr, status, error) {
                     alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");

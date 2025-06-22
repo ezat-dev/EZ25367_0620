@@ -321,20 +321,20 @@
             </select>
 	        
 	        <button class="select-button" onclick="loadWorkDailyData()">
-	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+	            <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 	        </button>
 	          <button class="insert-button bt1">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
                    <button class="insert-button bt3">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                         </button>
                       <button class="delete-button bt1_1">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
 				            
                       <button class="delete-button bt3_3">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
 				
                 
@@ -354,10 +354,10 @@
     <!-- 버튼들 여기로 옮김 -->
     <div class="button-container-2">
         <button class="insert-button bt2">
-            <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image"> 추가
+            <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image"> 추가
         </button>
         <button class="delete-button bt2_2">
-            <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+            <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
         </button>
     </div>
 
@@ -627,7 +627,7 @@
 
     console.log("테이블 1전송 데이터:", formData);
     $.ajax({
-      url: "/geomet/condition/machineliquidmanage/insert",
+      url: "/chunil/condition/machineliquidmanage/insert",
       method: "POST",
       data: formData,
       success: function() {
@@ -653,7 +653,7 @@
 
     console.log("테이블 2전송 데이터:", formData);
     $.ajax({
-      url: '/geomet/condition/machineliquidmanage2/insert',
+      url: '/chunil/condition/machineliquidmanage2/insert',
       method: "POST",
       data: formData,
       success: function() {
@@ -674,7 +674,7 @@
       formData[this.name] = $(this).val();
     });
     $.ajax({
-      url: '/geomet/condition/machineliquidmanage/insert',
+      url: '/chunil/condition/machineliquidmanage/insert',
       method: "POST",
       data: formData,
       success: function() {
@@ -694,7 +694,7 @@
     const mch_name = $("#mch_name").val();
     $.ajax({
       type: "POST",
-      url: "/geomet/condition/machineliquidmanage/list",
+      url: "/chunil/condition/machineliquidmanage/list",
       contentType: "application/json",
       data: JSON.stringify({ in_date, mch_name }),
       success: function(response) {
@@ -919,7 +919,7 @@
 
     selectedRows.forEach(row => {
       $.ajax({
-        url: '/geomet/condition/machineliquidmanage/del',
+        url: '/chunil/condition/machineliquidmanage/del',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ id: row.id }),
@@ -953,7 +953,7 @@
 	  selectedRows.forEach(row => {
 	    console.log('삭제 요청 보낼 데이터:', row);  // 콘솔에 데이터 출력
 	    $.ajax({
-	      url: '/geomet/condition/machineliquidmanage/del',
+	      url: '/chunil/condition/machineliquidmanage/del',
 	      type: 'POST',
 	      contentType: 'application/json',
 	      data: JSON.stringify({ id: row.id }),
@@ -983,7 +983,7 @@
     selectedRows.forEach(row => {
     	 console.log('삭제2222 요청 보낼 데이터:', row);
       $.ajax({
-        url: '/geomet/condition/machineliquidmanage2/del',
+        url: '/chunil/condition/machineliquidmanage2/del',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ id: row.id }),

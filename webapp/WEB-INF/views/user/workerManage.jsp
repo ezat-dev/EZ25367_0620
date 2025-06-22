@@ -286,20 +286,20 @@
 
 	   <div class="button-container">
 	        
-			<button class="navigate-button" onclick="location.href='/geomet/user/workerManage2'">
+			<button class="navigate-button" onclick="location.href='/chunil/user/workerManage2'">
 			  인수인계 페이지
 			</button>
 			 
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
 	        <button class="select-button" onclick="loadWorkDailyData()">
-	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+	            <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 	        </button>
 	          <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
                       <button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
                 
 	    </div>
@@ -452,7 +452,7 @@
 	  }
 
 	  $.ajax({
-	    url: "/geomet/user/workerManage/insert",
+	    url: "/chunil/user/workerManage/insert",
 	    method: "POST",
 	    data: formData,
 	    processData: false,
@@ -484,7 +484,7 @@
 	  console.log('보내는 데이터 (table2 수정):', formData);
 
 	  $.ajax({
-	    url: '/geomet/user/workerManage/insertSchedule',  // 실제 수정용 엔드포인트로 변경
+	    url: '/chunil/user/workerManage/insertSchedule',  // 실제 수정용 엔드포인트로 변경
 	    method: 'POST',
 	    contentType: 'application/json',
 	    data: JSON.stringify(formData),
@@ -511,7 +511,7 @@
 	  console.log("삭제 요청 데이터:", deleteData);
 
 	  $.ajax({
-	    url: "/geomet/user/workerManage/delete",
+	    url: "/chunil/user/workerManage/delete",
 	    method: "POST",
 	    contentType: "application/json",
 	    data: JSON.stringify(deleteData),
@@ -530,7 +530,7 @@
 
       $.ajax({
         type: "POST",
-        url: "/geomet/user/workerManage/list",
+        url: "/chunil/user/workerManage/list",
         contentType: "application/json",
         data: JSON.stringify({ s_time }),
         success: function(response) {

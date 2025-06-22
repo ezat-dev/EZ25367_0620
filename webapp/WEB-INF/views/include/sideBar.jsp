@@ -4,12 +4,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/geomet/css/login/style.css">
+	<link rel="stylesheet" href="/chunil/css/login/style.css">
 
 	<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>  
-	<link rel="stylesheet" href="/geomet/css/sideBar/styles.css">
-	<link rel="stylesheet" href="/geomet/css/login/style2.css">
-	<link rel="stylesheet" href="/geomet/css/headerBar/headerBar.css">
+	<link rel="stylesheet" href="/chunil/css/sideBar/styles.css">
+	<link rel="stylesheet" href="/chunil/css/login/style2.css">
+	<link rel="stylesheet" href="/chunil/css/headerBar/headerBar.css">
 <%@include file="../include/pluginpage.jsp" %>
   
 <title>진합</title>
@@ -142,7 +142,7 @@
 	    <!-- 로그인정보 표현, 로그아웃 버튼 -->
 	    <p class="loginName" style="font-size:20px; margin-left:960px; color : white; font-weight:800;"></p>
         <button class="logout-button">
-            <img src="/geomet/css/headerBar/exit-outline.svg" alt="select" class="button-image">로그아웃	           
+            <img src="/chunil/css/headerBar/exit-outline.svg" alt="select" class="button-image">로그아웃	           
         </button>
     </header>
 
@@ -151,86 +151,46 @@
         <nav class="nav">
             <div>
             <div class="nav__brand">
-                 <a href="#" class="nav__logo"><img class="tkLogo" src="/geomet/css/sideBar/jinhap4.gif"></a>
+                 <a href="#" class="nav__logo"><img class="tkLogo" src="/chunil/css/sideBar/jinhap4.gif"></a>
             </div>
 			<div class="nav__list">
-                    
+<!--  a1 ~ a7 -->
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">모니터링</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 				<ul class="collapse__menu" id="aMenu"></ul>
 			</div>
-
+<!--  b1 ~ b7 -->
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">생산관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 				<ul class="collapse__menu" id="bMenu"></ul>
 			</div>
-
+<!--  c1 ~ c7 -->
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">조건관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 				<ul class="collapse__menu" id="cMenu"></ul>
 			</div>
-
+<!--  d1 ~ d7 -->
 			<div class="nav__link collapse">
 				<ion-icon name="desktop-outline"></ion-icon>
 				<span class="nav_name">품질관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 				<ul class="collapse__menu" id="dMenu"></ul>
 			</div>
-
+<!--  e1 ~ e7 -->
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
-				<span class="nav_name">인원 및 안전관리</span>
+				<span class="nav_name">기준관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 				<ul class="collapse__menu" id="eMenu"></ul>
 			</div>
 
-			<div class="nav__link collapse">
-				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
-				<span class="nav_name">투입 운전관리</span>
-				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="fMenu"></ul>
-			</div>
-
-			<div class="nav__link collapse">
-				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
-				<span class="nav_name">취출 운전관리</span>
-				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="gMenu"></ul>
-			</div>
-	
-			<div class="nav__link collapse">
-				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
-				<span class="nav_name">설비관리</span>
-				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="hMenu"></ul>
-			</div>
-
-			<div class="nav__link collapse">
-				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
-				<span class="nav_name">문서관리</span>
-				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="iMenu"></ul>
-			</div>
-			
-			<div class="nav__link collapse">
-				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
-				<span class="nav_name">AGV 관리</span>
-				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="jMenu"></ul>
-			</div>
-			
-			<div class="nav__link collapse">
-				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
-				<span class="nav_name">세척 관리</span>
-				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="kMenu"></ul>
-			</div>
+		
 		</div>
 	</div>
 </nav>
@@ -264,11 +224,11 @@
     //이벤트
    	$(".logout-button").on("click",function(){
    		$.ajax({
-   			url:"/geomet/user/logout",
+   			url:"/chunil/user/logout",
    			type:"get",
    			dataTypa:"json",
    			success:function(result){
-   				location.href = "/geomet";
+   				location.href = "/chunil";
    			}
    		});
    	});    
@@ -276,7 +236,7 @@
     //함수
 	function loginUserMenuSetting(){
 		$.ajax({
-			url:"/geomet/user/login/menuSetting",
+			url:"/chunil/user/login/menuSetting",
 			type:"post",
 			dataType:"json",
 			success:function(result){
@@ -310,7 +270,7 @@
 							}else if(key.indexOf("e") != -1){
 								_group = "인원 및 안전관리";
 								_groupID = "eMenu";
-							}else if(key.indexOf("f") != -1){
+							}/* else if(key.indexOf("f") != -1){
 								_group = "투입 운전관리";
 								_groupID = "fMenu";
 							}else if(key.indexOf("g") != -1){
@@ -328,7 +288,7 @@
 							}else if(key.indexOf("k") != -1){
 								_group = "세척관리";
 								_groupID = "kMenu";
-							}
+							} */
 							
 							
 							_group_t = _group.replace(/\s/gi,"&nbsp;");
@@ -375,7 +335,7 @@
         
 	function menuSave(loginCode, menuUrl, menuName){
 		$.ajax({
-			url:"/geomet/user/login/menuSave",
+			url:"/chunil/user/login/menuSave",
 			type:"post",
 			dataType:"json",
 			data:{
@@ -393,7 +353,7 @@
 	    var loginCode = "${loginUser.user_code}";
 	    
 	    $.ajax({
-	        url:"/geomet/user/login/menuList",
+	        url:"/chunil/user/login/menuList",
 	        type:"post",
 	        dataType:"json",
 	        data:{
@@ -467,7 +427,7 @@ function removeMenu2(button) {
     }
 
     $.ajax({
-        url: "/geomet/user/login/menuRemove",
+        url: "/chunil/user/login/menuRemove",
         type: "post",
         dataType: "json",
         data: {
@@ -493,7 +453,7 @@ function removeMenu(url) {
 
 	   
    $.ajax({
-	  url:"/geomet/user/login/menuRemove",
+	  url:"/chunil/user/login/menuRemove",
 	  type:"post",
 	  dataType:"json",
 	  data:{

@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 <typeAliases>
-	<package name="com.ez25367.domain"/>
+	<package name="com.chunil.domain"/>
 </typeAliases>
   <mappers>
   	<mapper resource="mybatis/mapper/users.xml"/>

@@ -292,19 +292,19 @@ width:1570px;
 	 
 	   <div class="button-container">
 	   
-	   		<button class="navigate-button" onclick="location.href='/geomet/user/workerManage'">
+	   		<button class="navigate-button" onclick="location.href='/chunil/user/workerManage'">
 			  작업자 현황 페이지
 			</button>
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
 	        <button class="select-button" onclick="loadWorkDailyData()">
-	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+	            <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 	        </button>
 	          <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
                       <button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
                 
 	    </div>
@@ -379,7 +379,7 @@ width:1570px;
 	  console.log('보내는 데이터 (table2 수정):', formData);
 
 	  $.ajax({
-	    url: '/geomet/user/work_handover/insert',  
+	    url: '/chunil/user/work_handover/insert',  
 	    method: 'POST',
 	    contentType: 'application/json',
 	    data: JSON.stringify(formData),
@@ -406,7 +406,7 @@ width:1570px;
 
       $.ajax({
         type: "POST",
-        url: "/geomet/user/work_handover/list",
+        url: "/chunil/user/work_handover/list",
         contentType: "application/json",
         data: JSON.stringify({ s_time }),
         success: function(response) {

@@ -430,5 +430,64 @@
 		WHERE id = #{id}
 	</delete>
 
+<!-- 표준문서 목록 조회 -->
+	<select id="standardDocList" parameterType="Condition" resultType="Condition">
+	  SELECT *
+	  FROM tb_standard_doc
+	  <where>
+	    <if test="mch_name != null and mch_name.trim() != ''">
+	      AND mch_name = #{mch_name}
+	    </if>
+
+	    <if test="startDate != null and endDate != null">
+	      AND cr_date BETWEEN #{startDate} AND #{endDate}
+	    </if>
+	  </where>
+	</select>
+
+
+    <!-- 표준문서 저장 (있으면 업데이트, 없으면 인서트) -->
+	<insert id="standardDocSaves" parameterType="Condition">
+	    INSERT INTO tb_standard_doc (
+	        idx, cr_date, mch_name, box1, box2, box3, box4, memo
+	    ) VALUES (
+	        #{idx}, #{cr_date}, #{mch_name}, #{box1}, #{box2}, #{box3}, #{box4}, #{memo}
+	    )
+	    ON DUPLICATE KEY UPDATE
+	        cr_date = VALUES(cr_date),
+	        mch_name = VALUES(mch_name),
+	        box1 = VALUES(box1),
+	        box2 = VALUES(box2),
+	        box3 = VALUES(box3),
+	        box4 = VALUES(box4),
+	        memo = VALUES(memo)
+	</insert>
+
+    <!-- 표준문서 삭제 -->
+    <delete id="standardDocDel" parameterType="Condition">
+        DELETE FROM tb_standard_doc
+        WHERE idx = #{idx}
+    </delete>
+    
+    
+    
+    <select id="getCheckManageList" parameterType="Condition" resultType="Condition">
+	  SELECT *
+	  FROM tb_check_manage
+	  WHERE ck_date LIKE CONCAT('%', #{ck_date}, '%')
+	  ORDER BY ck_date
+	</select>
+	
+	<update id="updateCheckManage" parameterType="Condition">
+	  UPDATE tb_check_manage
+	  SET
+	    ck_date = #{ck_date},
+	    a_1 = #{a_1},
+	    a_2 = #{a_2},
+	    a_3 = #{a_3},
+	    a_4 = #{a_4},
+	    a_5 = #{a_5}
+	  WHERE idx = #{idx}
+	</update>
 
 </mapper>

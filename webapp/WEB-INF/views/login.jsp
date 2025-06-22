@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/geomet/css/login/style.css">
+  <link rel="stylesheet" href="/chunil/css/login/style.css">
   <%@include file="include/pluginpage.jsp" %>
   
   <style>
@@ -55,7 +55,7 @@
 <body>
   <div class="group-1">
     <div class="main"></div>
-    <img class="background-1" src="/geomet/css/login/backA.png" />
+    <img class="background-1" src="/chunil/css/login/backA.png" />
     <div class="login-box"></div>
     
     
@@ -64,7 +64,7 @@
     <div class="id-input"></div>
     <div class="pw-input"></div>
     <div class="text-1"></div>
-    <div class="text-2">대전 대덕구 문평서로 42 (주)진합</div>
+    <div class="text-2"> (주)천일</div>
     <form id="userForm" autocomplete="off">
     	<input type="text" id="n_id" name="user_id" placeholder="아이디를 입력하세요."  />
     	<input type="password" id="n_pw" name="user_pw" placeholder="비밀번호를 입력하세요." />
@@ -73,8 +73,8 @@
     <button class="login_btn" onclick="login();">로그인</button>
     <div class="text-5">아이디</div>
     <div class="text-6">패스워드</div>
-<!--     <img class="logo" src="/geomet/css/login/logo0.svg" /> -->
-    <div class="text-4">주식회사 진합 로그인</div>
+<!--     <img class="logo" src="/chunil/css/login/logo0.svg" /> -->
+    <div class="text-4">주식회사 천일 로그인</div>
     <div class="text-3">
       Copyright 2025. EZAutomation Co. All rights reserved.
     </div>
@@ -94,7 +94,7 @@ $("*").on("keydown",function(e){
 function login(){
 	var userData = new FormData($("#userForm")[0]);
 	$.ajax({
-		url:"/geomet/user/login/check",
+		url:"/chunil/user/login/check",
 		type:"post",
 		contentType: false,
 		processData: false,
@@ -102,7 +102,7 @@ function login(){
 		data:userData,
 		success:function(result){
 //			console.log(result);
-			location.href = "/geomet/jinhapGeomet";
+			location.href = "/chunil/jinhapchunil";
 			
 //			var pageData = result.loginUserPage;
 		}
@@ -116,7 +116,7 @@ function login(){
 function login() {
     var userData = new FormData($("#userForm")[0]);
     $.ajax({
-        url: "/geomet/user/login/check",
+        url: "/chunil/user/login/check",
         type: "post",
         contentType: false,
         processData: false,
@@ -127,7 +127,7 @@ function login() {
 
             if (result.data && result.data.user_id) {
 
-                location.href = "/geomet/jinhapGeomet";  
+                location.href = "/chunil/main";  
 
             } else {
             	 console.log(userData); 

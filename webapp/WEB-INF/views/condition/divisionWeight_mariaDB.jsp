@@ -285,21 +285,21 @@
 			
 			
                 <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                    <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
                 <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
                  <button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
 
                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
                 </button>
                 
                 <button class="excel-import-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Upload
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Upload
                 </button>
 			<input type="file" id="fileInput" style="display: none;">
             </div>
@@ -388,7 +388,7 @@
 
 
 	    $(".select-button").click(function () {
-	        dataTable.setData("/geomet/condition/divisionWeight/list", {
+	        dataTable.setData("/chunil/condition/divisionWeight/list", {
 	            "plating_no": $("#plating_no").val() || "",
 	            "pum_name": $("#pum_name").val() || "",
 	            "surface_spec": $("#surface_spec").val() || "",
@@ -419,7 +419,7 @@
         var corrForm = new FormData($("#corrForm")[0]);
 
         $.ajax({
-            url: "/geomet/condition/divisionWeight/insert",
+            url: "/chunil/condition/divisionWeight/insert",
             type: "POST",
             data: corrForm,
             dataType: "json",
@@ -462,7 +462,7 @@
         console.log("전송된 데이터:", requestData);
 
         $.ajax({
-            url: "/geomet/condition/divisionWeight/del",
+            url: "/chunil/condition/divisionWeight/del",
             type: "POST",
             contentType: "application/json",
             data: requestData,
@@ -473,7 +473,7 @@
                 selectedRow.delete();
                 selectedRow = null;
 
-                dataTable.setData("/geomet/condition/divisionWeight/list", {
+                dataTable.setData("/chunil/condition/divisionWeight/list", {
                     "plating_no": $("#plating_no").val() || "",
                     "pum_name": $("#pum_name").val() || "",
                     "surface_spec": $("#surface_spec").val() || "",
@@ -501,7 +501,7 @@
             headerHozAlign: "center",
             ajaxConfig: "POST",
             ajaxLoader: false,
-            ajaxURL: "/geomet/condition/divisionWeight/list",
+            ajaxURL: "/chunil/condition/divisionWeight/list",
             ajaxProgressiveLoad: "scroll",
             ajaxParams: {
                 "plating_no": $("#plating_no").val() || "",
@@ -611,12 +611,12 @@
     	  console.log("엑셀 다운로드 버튼 클릭됨"); 
           
         $.ajax({
-            url: "/geomet/condition/divisionWeight/excel",
+            url: "/chunil/condition/divisionWeight/excel",
             type: "post",
             dataType: "json",
             success: function (result) {
                 console.log(result);
-                alert("D:\\GEOMET양식\\기준정보 저장 완료되었습니다.");
+                alert("D:\\chunil양식\\기준정보 저장 완료되었습니다.");
             },
             error: function (xhr, status, error) {
                 alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -641,7 +641,7 @@
         formData.append("file", file);
 
         $.ajax({
-            url: "/geomet/condition/divisionWeight/excelFileInput",
+            url: "/chunil/condition/divisionWeight/excelFileInput",
             type: "POST",
             data: formData,
             contentType: false,

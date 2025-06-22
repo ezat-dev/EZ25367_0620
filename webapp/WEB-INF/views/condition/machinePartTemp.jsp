@@ -204,12 +204,12 @@
             </select>
 			</div>
 				<button type="button" class="select-button">
-				    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+				    <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 				</button>
 
                 
                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
              
             </div>
@@ -526,7 +526,7 @@ let now_page_code = "c02";
         reactiveData: true,
         headerHozAlign: 'center',
         ajaxConfig: { method: 'POST' },
-        ajaxURL: '/geomet/condition/machinePartTemp/list',
+        ajaxURL: '/chunil/condition/machinePartTemp/list',
         ajaxParams: { startDate: startDate, mch_code: mch_code },
         placeholder: '조회된 데이터가 없습니다.',
         paginationSize: false,
@@ -563,7 +563,7 @@ let now_page_code = "c02";
       });
     } else {
       dataTable.setColumns(cols);
-      dataTable.setData('/geomet/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
+      dataTable.setData('/chunil/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
     }
   }
 
@@ -579,7 +579,7 @@ let now_page_code = "c02";
     else if (mch_code === 'G04-GG05') cols = g04Columns;
 
     dataTable.setColumns(cols);
-    dataTable.setData('/geomet/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
+    dataTable.setData('/chunil/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
   }
 
   function toggleModal(show) {
@@ -595,7 +595,7 @@ let now_page_code = "c02";
 	    });
 
 	    $.ajax({
-	        url: '/geomet/condition/machinePartTemp/update', 
+	        url: '/chunil/condition/machinePartTemp/update', 
 	        type: 'POST',
 	        data: corrForm,
 	        dataType: 'json',

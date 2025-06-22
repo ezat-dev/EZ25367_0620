@@ -269,21 +269,21 @@
             </select>
 			</div>
                 <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                    <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
            <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                    <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
 <!--                 <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
+                    <img src="/chunil/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
                 </button> -->
             </div>
               
         </div>
- 		<img src="/geomet/css/tabBar/car.png"  class="car">
+ 		<img src="/chunil/css/tabBar/car.png"  class="car">
         <div class="view">
             <div id="dataList"></div>
             <div id="dataList2"></div>
@@ -626,7 +626,7 @@
      	    },
              ajaxConfig: "POST",
              ajaxLoader: false,
-             ajaxURL: "/geomet/user/getCleanCar/List",
+             ajaxURL: "/chunil/user/getCleanCar/List",
 
              ajaxParams: {
                  s_date: s_date_val,
@@ -793,7 +793,7 @@
                 });
 
                 $.ajax({
-                    url: "/geomet/user/getCleanCar/insert",  // 청소차 저장 API 주소
+                    url: "/chunil/user/getCleanCar/insert",  // 청소차 저장 API 주소
                     type: "POST",
                     data: cleanCarForm,
                     dataType: "json",
@@ -841,7 +841,7 @@
         	    },
                 ajaxConfig: "POST",
                 ajaxLoader: false,
-                ajaxURL: "/geomet/user/getForkCar/List",
+                ajaxURL: "/chunil/user/getForkCar/List",
 
                 ajaxParams: {
                     s_date: s_date_val,
@@ -978,7 +978,7 @@
                 });
 
                 $.ajax({
-                    url: "/geomet/user/getForkCar/insert",
+                    url: "/chunil/user/getForkCar/insert",
                     type: "POST",
                     data: corrForm,
                     dataType: "json",

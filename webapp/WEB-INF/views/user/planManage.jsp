@@ -182,16 +182,16 @@
         </div>
 
         <button class="select-button">
-          <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+          <img src="/chunil/css/tabBar/search-icon.png" alt="select" class="button-image">조회
         </button>
         <button class="insert-button">
-          <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+          <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
         </button>
         <button class="delete-button">
-          <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image">삭제
+          <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image">삭제
         </button>
         <button class="excel-button">
-          <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+          <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
         </button>
       </div>
     </div>
@@ -293,7 +293,7 @@
         reactiveData: true,
         headerHozAlign: 'center',
         ajaxConfig: { method: 'POST' },
-        ajaxURL: '/geomet/user/planManage/list',
+        ajaxURL: '/chunil/user/planManage/list',
         ajaxParams: function() {
         	  const params = {
         	    name: $('#name').val(),
@@ -333,9 +333,9 @@
             width: 200,
             formatter: function(cell) {
             	  var file = cell.getValue();
-            	  var basePath = 'D:\\GEOMET양식\\자격인증관리\\';
+            	  var basePath = 'D:\\chunil양식\\자격인증관리\\';
             	  return file
-            	    ? '<a href="/geomet/download?filename=' + encodeURIComponent(basePath + file) + '" target="_blank">' + file + '</a>'
+            	    ? '<a href="/chunil/download?filename=' + encodeURIComponent(basePath + file) + '" target="_blank">' + file + '</a>'
             	    : '';
             	}
 
@@ -376,7 +376,7 @@
 
       // 3) 검색 버튼
       $('.select-button').click(function() {
-        dataTable.setData('/geomet/user/planManage/list', {
+        dataTable.setData('/chunil/user/planManage/list', {
           name: $('#name').val(),
           startDate: $('#startDate').val(),
           endDate: $('#endDate').val()
@@ -399,7 +399,7 @@
         }
         if (!confirm('정말 삭제하시겠습니까?')) return;
         $.ajax({
-          url: '/geomet/user/planManage/delete',
+          url: '/chunil/user/planManage/delete',
           type: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({ no: selectedRowData.no }),
@@ -446,7 +446,7 @@
         }
 
         $.ajax({
-          url: '/geomet/user/planManage/insert',
+          url: '/chunil/user/planManage/insert',
           type: 'POST',
           data: formData,
           processData: false,
