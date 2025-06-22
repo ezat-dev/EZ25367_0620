@@ -369,9 +369,7 @@ let selectedRow;
 function pdfLinkFormatter(cell) {
     var fn = cell.getValue();
     if (!fn) return "";
-    // 1) 기본 인코딩
     var enc = encodeURIComponent(fn);
-    // 2) 괄호까지 안전하게 인코딩
     enc = enc.replace(/\(/g, '%28').replace(/\)/g, '%29');
     return '<a href="javascript:void(0);" onclick="openPdf(\'' + enc + '\')">' + fn + '</a>';
 }
@@ -383,13 +381,12 @@ function openPdf(encodedName) {
         alert("파일명이 없습니다!");
         return;
     }
-    // iframe src 세팅
     document.getElementById('pdfFrame').src = 
         '/chunil/download_standardDoc?filename=' + encodedName;
     document.getElementById('pdfViewerModal').style.display = 'flex';
 }
 
-// getDataList 함수 정의
+// getDataList 
 function getDataList() {
     dataTable = new Tabulator("#dataList", {
         height: "760px",
@@ -501,17 +498,14 @@ $(document).ready(function () {
         $("#modalContainer").show().addClass("show");
     });
 
-    // modal close
     $(".close, #closeModal").click(function () {
         $("#modalContainer").removeClass("show").hide();
     });
 
-    // 설비 변경 로그
     $("#mch_name").on("change", function () {
         console.log("선택된 설비명:", $(this).val());
     });
 
-    // 조회 버튼
     $(".select-button").click(function () {
         dataTable.setData("/chunil/condition/standardDoc/list", {
             mch_name: $("#mch_name").val(),
