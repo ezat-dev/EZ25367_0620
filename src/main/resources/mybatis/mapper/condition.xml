@@ -92,85 +92,81 @@
 
 	<!-- /////////////////////////////////////// -->
 	<!--기준정보 -->
-	<select id="getStandardInfoList" parameterType="condition"
-		resultType="condition">
+	<select id="getStandardInfoList" parameterType="condition" resultType="condition">
 		SELECT *
-		FROM PWO_GEO_DIVISION_DATA_EZ
-
+		FROM tb_standard
 		<where>
-			<if test="coating_nm != null and coating_nm != ''">
-				AND COATING_NM LIKE '%'||#{coating_nm}||'%'
+			<if test="item_no != null and item_no != ''">
+				AND item_no LIKE CONCAT('%', #{item_no}, '%')
 			</if>
-
-
-			<if test="group_id != null and group_id != ''">
-				AND GROUP_ID LIKE '%'||#{group_id}||'%'
+			<if test="t_grade != null and t_grade != ''">
+				AND t_grade LIKE CONCAT('%', #{t_grade}, '%')
 			</if>
-			<if test="item_cd != null and item_cd != ''">
-				AND ITEM_CD LIKE '%'||#{item_cd}||'%'
+			<if test="steel_grade != null and steel_grade != ''">
+				AND steel_grade LIKE CONCAT('%', #{steel_grade}, '%')
 			</if>
-			<if test="item_nm != null and item_nm != ''">
-				AND ITEM_NM LIKE '%'||#{item_nm}||'%'
-			</if>
-
-
 		</where>
 	</select>
 
-	<insert id="saveDivisionWeight" parameterType="Condition">
-
-		MERGE INTO PWO_GEO_DIVISION_DATA_EZ
-		USING DUAL
-		ON (
-		<!-- PLAC_CD = #{plac_cd} AND PLNT_CD = #{plnt_cd} AND -->
-		ITEM_CD = #{item_cd}
+		<insert id="saveDivisionWeight" parameterType="condition">
+		INSERT INTO tb_standard (
+			equipment_name,
+			item_no,
+			item_name,
+			steel_grade,
+			t_grade,
+			apply_temp1,
+			apply_temp2,
+			apply_cp,
+			std_load,
+			hardness_req
 		)
-		WHEN MATCHED THEN
-		UPDATE SET
-		group_id = #{group_id},
-		item_nm = #{item_nm},
-		mach_main = #{mach_main},
-		mach_main_weight = #{mach_main_weight},
-		mach_sub = #{mach_sub},
-		mach_sub_weight = #{mach_sub_weight},
-		mlpl_weight = #{mlpl_weight},
-		coating_nm = #{coating_nm},
-		kblack_weight = #{kblack_weight}
-		WHEN NOT MATCHED THEN
-		INSERT (PLAC_CD, PLNT_CD, GROUP_ID, ITEM_CD, ITEM_NM,
-		MACH_MAIN, MACH_MAIN_WEIGHT, MACH_SUB, MACH_SUB_WEIGHT,
-		MLPL_WEIGHT,COATING_NM, KBLACK_WEIGHT)
-		VALUES (#{plac_cd}, #{plnt_cd}, #{group_id}, #{item_cd}, #{item_nm},
-		#{mach_main}, #{mach_main_weight}, #{mach_sub}, #{mach_sub_weight},
-		#{mlpl_weight}, #{coating_nm}, #{kblack_weight})
-		<!-- INSERT INTO PWO_GEO_DIVISION_DATA_EZ ( PLAC_CD, PLNT_CD, GROUP_ID, 
-			ITEM_CD, ITEM_NM, MACH_MAIN, MACH_MAIN_WEIGHT, MACH_SUB, MACH_SUB_WEIGHT, 
-			MLPL_WEIGHT, KBLACK_WEIGHT ) SELECT 'JH_KR_01', '02', #{group_id}, #{item_cd}, 
-			#{item_nm}, #{mach_main}, #{mach_main_weight}, #{mach_sub}, #{mach_sub_weight}, 
-			#{mlpl_weight}, #{kblack_weight} FROM DUAL WHERE #{item_cd} IS NOT NULL AND 
-			#{item_cd} != '' ON DUPLICATE KEY UPDATE group_id = CASE WHEN VALUES(item_cd) 
-			IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(group_id) ELSE group_id 
-			END, item_cd = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) 
-			!= '' THEN VALUES(item_cd) ELSE item_cd END, item_nm = CASE WHEN VALUES(item_cd) 
-			IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(item_nm) ELSE item_nm END, 
-			mach_main = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != 
-			'' THEN VALUES(mach_main) ELSE mach_main END, mach_main_weight = CASE WHEN 
-			VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(mach_main_weight) 
-			ELSE mach_main_weight END, mach_sub = CASE WHEN VALUES(item_cd) IS NOT NULL 
-			AND VALUES(item_cd) != '' THEN VALUES(mach_sub) ELSE mach_sub END, mach_sub_weight 
-			= CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(mach_sub_weight) 
-			ELSE mach_sub_weight END, mlpl_weight = CASE WHEN VALUES(item_cd) IS NOT 
-			NULL AND VALUES(item_cd) != '' THEN VALUES(mlpl_weight) ELSE mlpl_weight 
-			END, kblack_weight = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) 
-			!= '' THEN VALUES(kblack_weight) ELSE kblack_weight END -->
+		VALUES (
+			#{equipment_name},
+			#{item_no},
+			#{item_name},
+			#{steel_grade},
+			#{t_grade},
+			#{apply_temp1},
+			#{apply_temp2},
+			#{apply_cp},
+			#{std_load},
+			#{hardness_req}
+		)
+		ON DUPLICATE KEY UPDATE
+			equipment_name = VALUES(equipment_name),
+			item_name = VALUES(item_name),
+			steel_grade = VALUES(steel_grade),
+			t_grade = VALUES(t_grade),
+			apply_temp1 = VALUES(apply_temp1),
+			apply_temp2 = VALUES(apply_temp2),
+			apply_cp = VALUES(apply_cp),
+			std_load = VALUES(std_load),
+			hardness_req = VALUES(hardness_req)
 	</insert>
 
 
+
 	<delete id="delDivisionWeight" parameterType="string">
-		DELETE FROM PWO_GEO_DIVISION_DATA_EZ
-		WHERE item_cd = #{item_cd}
+		DELETE FROM tb_standard
+		WHERE item_no = #{item_no}
 	</delete>
 
+<update id="updateDivisionWeight" parameterType="condition">
+	UPDATE tb_standard
+	SET
+		equipment_name = #{equipment_name},
+		item_name = #{item_name},
+		steel_grade = #{steel_grade},
+		t_grade = #{t_grade},
+		apply_temp1 = #{apply_temp1},
+		apply_temp2 = #{apply_temp2},
+		apply_cp = #{apply_cp},
+		std_load = #{std_load},
+		hardness_req = #{hardness_req}
+	WHERE
+		item_no = #{item_no}
+</update>
 
 
 	<!--TC조절 -->

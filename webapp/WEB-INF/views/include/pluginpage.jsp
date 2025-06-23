@@ -214,7 +214,7 @@ function pageObject(paramKey){
 			"b06":["/chunil/productionManagement/heatTreatment","열처리 작업이력"],
 			"b07":"",
 			//조건관리
-			"c01":["/chunil/condition/corrStatus","기준정보관리"],
+			"c01":["/chunil/condition/standardData","기준정보관리"],
 			"c02":["/chunil/condition/machinePartTemp","열전대 교체이력"],
 			"c03":["/chunil/condition/machineLiquidManage","온도조절계 보정현황"],
 			"c04":["/chunil/condition/dailyCheck","일상점검일지"],
@@ -222,7 +222,7 @@ function pageObject(paramKey){
 			"c06":["/chunil/condition/inputProduct","낙하품 관리"],
 			"c07":"",
 			//품질관리
-			"d01":["/chunil/quality/tempUniformity","온도균일성 조사보고서"],
+			"d01":["/chunil/quality/tusTest","온도균일성 조사보고서"],
 			"d02":["/chunil/quality/heatTreatingOil","열처리유 성상분석"],
 			"d03":["/chunil/quality/fProof","F/PROOF"],
 			"d04":["/chunil/quality/cpk","Cpk"],
@@ -230,7 +230,7 @@ function pageObject(paramKey){
 			"d06":"",
 			"d07":"",
 			//기준관리
-			"e01":["/chunil/standardManagement/notOperational","비가동현황"],
+			"e01":["/chunil/standard/nonTime","비가동현황"],
 			"e02":["/chunil/user/userInsert","사용자등록"],
 			"e03":["/chunil/user/userPermission","사용자 권한"],
 			"e04":"",

@@ -1,7 +1,7 @@
 package com.chunil.domain;
 
 public class Condition {
-	
+	    private String insert_date;
 	    private Integer idx;
 	    private String cr_date;
 	   // private String mch_name;
@@ -132,37 +132,19 @@ public class Condition {
 	    // T급
 	    private String t_grade;  
 	    
-	    // 진합로트
-	    private String batch;         
+       
 
 	    // 참고기준정보 소입온도
-	    private Integer ref_soak_temp;  
+	    private Integer apply_temp1;  
 	    
 	    // 참고기준정보 소려온도
-	    private Integer ref_cool_temp;     
+	    private Integer apply_temp2;     
 	    
-	    // 참고기준정보 CP
-	    private float ref_cp;       
-
-	    
-	    // 적용기준정보 소입온도
-	    private Integer apply_soak_temp; 
-	    
-	    // 적용기준정보 소려온도
-	    private Integer apply_cool_temp; 
 	    
 	    // 적용기준정보 CP
-	    private float apply_cp;   
+	    private Float apply_cp;   
 
-	    // 장입량1
-	    private Integer load1;       
-	    
-	    // 장입량2
-	    private Integer load2;       
-	    
-	    // 장입량3
-	    private Integer load3;       
-	    
+
 	    // 기준 장입량
 	    private Integer std_load;     
 	    
@@ -171,17 +153,26 @@ public class Condition {
 	    
 
 
-		@Override
-		public String toString() {
-			return "Condition [equipment_name=" + equipment_name + ", item_no=" + item_no + ", item_name=" + item_name
-					+ ", steel_grade=" + steel_grade + ", t_grade=" + t_grade + ", batch=" + batch + ", ref_soak_temp="
-					+ ref_soak_temp + ", ref_cool_temp=" + ref_cool_temp + ", ref_cp=" + ref_cp + ", apply_soak_temp="
-					+ apply_soak_temp + ", apply_cool_temp=" + apply_cool_temp + ", apply_cp=" + apply_cp + ", load1="
-					+ load1 + ", load2=" + load2 + ", load3=" + load3 + ", std_load=" + std_load + ", hardness_req="
-					+ hardness_req + "]";
+		
+		
+		public String getInsert_date() {
+			return insert_date;
 		}
-		
-		
+		public void setInsert_date(String insert_date) {
+			this.insert_date = insert_date;
+		}
+		public Integer getApply_temp1() {
+			return apply_temp1;
+		}
+		public void setApply_temp1(Integer apply_temp1) {
+			this.apply_temp1 = apply_temp1;
+		}
+		public Integer getApply_temp2() {
+			return apply_temp2;
+		}
+		public void setApply_temp2(Integer apply_temp2) {
+			this.apply_temp2 = apply_temp2;
+		}
 		public Integer getIdx() {
 		    return idx;
 		}
@@ -250,65 +241,14 @@ public class Condition {
 		public void setT_grade(String t_grade) {
 			this.t_grade = t_grade;
 		}
-		public String getBatch() {
-			return batch;
-		}
-		public void setBatch(String batch) {
-			this.batch = batch;
-		}
-		public Integer getRef_soak_temp() {
-			return ref_soak_temp;
-		}
-		public void setRef_soak_temp(Integer ref_soak_temp) {
-			this.ref_soak_temp = ref_soak_temp;
-		}
-		public Integer getRef_cool_temp() {
-			return ref_cool_temp;
-		}
-		public void setRef_cool_temp(Integer ref_cool_temp) {
-			this.ref_cool_temp = ref_cool_temp;
-		}
-		public float getRef_cp() {
-			return ref_cp;
-		}
-		public void setRef_cp(float ref_cp) {
-			this.ref_cp = ref_cp;
-		}
-		public Integer getApply_soak_temp() {
-			return apply_soak_temp;
-		}
-		public void setApply_soak_temp(Integer apply_soak_temp) {
-			this.apply_soak_temp = apply_soak_temp;
-		}
-		public Integer getApply_cool_temp() {
-			return apply_cool_temp;
-		}
-		public void setApply_cool_temp(Integer apply_cool_temp) {
-			this.apply_cool_temp = apply_cool_temp;
-		}
-		public float getApply_cp() {
+
+
+
+		public Float getApply_cp() {
 			return apply_cp;
 		}
-		public void setApply_cp(float apply_cp) {
+		public void setApply_cp(Float apply_cp) {
 			this.apply_cp = apply_cp;
-		}
-		public Integer getLoad1() {
-			return load1;
-		}
-		public void setLoad1(Integer load1) {
-			this.load1 = load1;
-		}
-		public Integer getLoad2() {
-			return load2;
-		}
-		public void setLoad2(Integer load2) {
-			this.load2 = load2;
-		}
-		public Integer getLoad3() {
-			return load3;
-		}
-		public void setLoad3(Integer load3) {
-			this.load3 = load3;
 		}
 		public Integer getStd_load() {
 			return std_load;

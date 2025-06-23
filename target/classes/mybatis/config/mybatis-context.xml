@@ -16,6 +16,9 @@
   	
   	<!-- 기준정보관리 쿼리 -->
   	<mapper resource="mybatis/mapper/standardData.xml"/>
+  	<!-- 기준관리 쿼리 -->
+  	<mapper resource="mybatis/mapper/standard.xml"/>
 
+    <mapper resource="mybatis/mapper/quality.xml"/>
   </mappers>
 </configuration>

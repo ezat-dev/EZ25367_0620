@@ -34,12 +34,55 @@ public class Quality {
 	    private String t_day;
 	    private String t_min;
 	    private String t_result;
+	    
+	    private String y_month;
+	    private String year;
+	    private String tx1;
+	    private String tx2;
+	    private String tx3;
+	    private String tx4;
 
 	    
 	    
 	    
 	    
 	    
+		public String getY_month() {
+			return y_month;
+		}
+		public void setY_month(String y_month) {
+			this.y_month = y_month;
+		}
+		public String getYear() {
+			return year;
+		}
+		public void setYear(String year) {
+			this.year = year;
+		}
+		public String getTx1() {
+			return tx1;
+		}
+		public void setTx1(String tx1) {
+			this.tx1 = tx1;
+		}
+		public String getTx2() {
+			return tx2;
+		}
+		public void setTx2(String tx2) {
+			this.tx2 = tx2;
+		}
+		public String getTx3() {
+			return tx3;
+		}
+		public void setTx3(String tx3) {
+			this.tx3 = tx3;
+		}
+		public String getTx4() {
+			return tx4;
+		}
+		public void setTx4(String tx4) {
+			this.tx4 = tx4;
+		}
 		public String getId() {
 			return id;
 		}

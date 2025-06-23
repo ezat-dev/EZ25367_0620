@@ -87,7 +87,7 @@ public class ConditionController {
             @RequestParam(value="hardness_req2", required=false) String hardness_req2) {
     	Map<String, Object> result = new HashMap<>();
     	System.out.println("insertConditionData 컨트롤러 도착");
-    	System.out.println("condition.getRef_cp(): " + condition.getRef_cp());
+
         
     	//요구강도 합치기
     	if(hardness_req1 != null && hardness_req2 != null) {
@@ -403,39 +403,37 @@ public class ConditionController {
     }		
 	
 	//지오메트 분할기준중량 입력, 관리
-    @RequestMapping(value= "/condition/divisionWeight", method = RequestMethod.GET)
+    @RequestMapping(value= "/condition/standardData", method = RequestMethod.GET)
     public String divisionWeight(Model model) {
-        return "/condition/divisionWeight.jsp"; // 
+        return "/condition/standardData.jsp"; // 
     }	
     
     //기준정보 리스트
     @RequestMapping(value = "/condition/divisionWeight/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> workDetailList(
-            @RequestParam String coating_nm,
-            @RequestParam String group_id,
-            @RequestParam String item_cd,
-            @RequestParam String item_nm
+          
+            @RequestParam String steel_grade,
+            @RequestParam String t_grade,
+            @RequestParam String item_no
     ) {
         Map<String, Object> rtnMap = new HashMap<>();
 
  
         System.out.println("========== [조회 조건] ==========");
-        System.out.println("coating_nm: " + coating_nm);
-        System.out.println("group_id  : " + group_id);
-        System.out.println("item_cd   : " + item_cd);
-        System.out.println("item_nm   : " + item_nm);
+        System.out.println("steel_grade: " + steel_grade);
+        System.out.println("t_grade  : " + t_grade);
+        System.out.println("item_no   : " + item_no);
         System.out.println("=================================");
 
         try {
-            Condition standardInfo = new Condition();
+            Condition condition = new Condition();
 
-            standardInfo.setCoating_nm(coating_nm.isEmpty() ? null : coating_nm); 
-            standardInfo.setGroup_id(group_id.isEmpty() ? null : group_id); 
-            standardInfo.setItem_cd(item_cd.isEmpty() ? null : item_cd);        
-            standardInfo.setItem_nm(item_nm.isEmpty() ? null : item_nm); 
-
-            List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
+            condition.setItem_no(item_no.isEmpty() ? null : item_no); 
+            condition.setSteel_grade(steel_grade.isEmpty() ? null : steel_grade); 
+            condition.setT_grade(t_grade.isEmpty() ? null : t_grade);        
+        
+            List<Condition> standardInfoList = conditionService.getStandardInfoList(condition);
 
             rtnMap.put("status", "success");
             rtnMap.put("last_page", 1);
@@ -456,12 +454,12 @@ public class ConditionController {
     public Map<String, Object> saveDivisionWeight(@ModelAttribute Condition condition) {
 
         Map<String, Object> rtnMap = new HashMap<String, Object>();
-        condition.setPlac_cd("JH_KR_01");
-        condition.setPlnt_cd("02");
+        
+        condition.setEquipment_name("열처리 연속로");
 
         // 먼저 조건 확인 후 로그 기록
-        if (condition.getItem_cd() == null) {
-            rtnMap.put("data", "도금 푼번을 입력하시오!");
+        if (condition.getItem_no() == null) {
+            rtnMap.put("data", "푼번을 입력하시오!");
         } else {
             conditionService.saveDivisionWeight(condition);
             rtnMap.put("data", "저장 완료");
@@ -485,7 +483,7 @@ public class ConditionController {
     public Map<String, Object> delDivisionWeight(@RequestBody Condition condition) {
         Map<String, Object> rtnMap = new HashMap<>();
 
-        if (condition.getItem_cd() == null) {
+        if (condition.getItem_no() == null) {
             rtnMap.put("data", "행 선택하세요");
             return rtnMap;
         }
@@ -511,14 +509,7 @@ public class ConditionController {
         Map<String, Object> rtnMap = new HashMap<>();
         Condition standardInfo = new Condition();
 
-		/*
-		 * SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
-		 * Date time = new Date(); String fileName = format.format(time) + ".xlsx";
-		 */
-   	 
-        
-        
-        
+  
         UserLog userLog = new UserLog();
         userLog.setUserCode(UserController.USER_CODE);
         userLog.setPageCode("c05");
@@ -535,8 +526,8 @@ public class ConditionController {
         
         FileOutputStream fos = null;
         FileInputStream fis = null;
-        String openPath = "D:/GEOMET양식/";
-        String savePath = "D:/GEOMET양식/기준정보/";
+        String openPath = "D:/천일_양식/";
+        String savePath = "D:/천일_양식/기준정보/";
 
         List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
 		/*
@@ -549,7 +540,7 @@ public class ConditionController {
         }
 
         try {
-            fis = new FileInputStream(openPath + "03_05.조건관리_지오메트 분할기준중량.xlsx");
+            fis = new FileInputStream(openPath + "기준정보.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -563,16 +554,16 @@ public class ConditionController {
 
 
             String[] fields = {
-            	    "group_id",
-            	    "item_cd",
-            	    "item_nm",
-            	    "mach_main",
-            	    "mach_main_weight",
-            	    "coating_nm",
-            	    "mach_sub",
-            	    "mach_sub_weight",
-            	    "mlpl_weight",
-            	    "kblack_weight"
+            	    "equipment_name",
+            	    "item_no",
+            	    "item_name",
+            	    "steel_grade",
+            	    "t_grade",
+            	    "apply_temp1",
+            	    "apply_temp2",
+            	    "apply_cp",
+            	    "std_load",
+            	    "hardness_req"
             	};
 
 
@@ -646,7 +637,7 @@ public class ConditionController {
     @RequestMapping(value = "/download_divisionWeight", method = RequestMethod.GET)
     public void downloadExcel(HttpServletResponse response) throws IOException {
         // 고정된 파일명과 경로
-        String baseDir = "D:/GEOMET양식/기준정보/";
+        String baseDir = "D:/천일_양식/기준정보/";
         String fileName = "기준정보.xlsx";
 
         File file = new File(baseDir + fileName);

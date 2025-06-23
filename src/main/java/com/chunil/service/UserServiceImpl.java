@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void userInsertDel(Users users) {
-        userDao.userInsertInsert(users);
+        userDao.userInsertDel(users);
     }
 
     @Override

@@ -308,24 +308,39 @@
         <h2>온도 균일성 테스트</h2>
        <form id="corrForm" autocomplete="off" enctype="multipart/form-data">
             
- 			<input type="hidden" name="id" id="id">
- 			<input type="hidden" name="year" id="year">
-	
-	      <label>년/월</label>
-	      <input type="text"  class="monthSet" name="y_month" placeholder="예: 2024/06" style="text-align: left;">
-	
-	      <label>동점도 (15~18)</label>
-	      <input type="text" name="tx1" placeholder="동점도 입력" style="text-align: left;">
-	
-	      <label>수분 (0.05 이하)</label>
-	      <input type="text" name="tx2" placeholder="수분 입력" style="text-align: left;">
-	
-	      <label>최대냉각속도 (93.7 ~ 114.6)</label>
-	      <input type="text" name="tx3" placeholder="최대냉각속도 입력" style="text-align: left;">
-	
-	      <label>전산가 (1.0 이하)</label>
-	      <input type="text" name="tx4" placeholder="전산가 입력" style="text-align: left;">
+            <label>발생설비</label>
+			<select name="mch_name" >
+		  	<option value="소려로 소입로">소려로 소입로</option>		  
+            </select>
+            
+            <label>연도</label>
+            <input type="text"name="t_year"  class="yearSet" placeholder="연도 선택" style="text-align: left;">
+           
+             <label>발생 월</label>
+			  <input type="text"name="t_month"  class="monthSet" placeholder="월 선택" style="text-align: left;">          
+              <input type="hidden" id="id" name="id" />
+             
+			
+ 			<label>측정일</label>
+            <input type="text"name="t_day"  class="daySet" placeholder="날짜 선택" style="text-align: left;">
+           
+            <label>합격 / 불학격</label>
+			<select name="t_gb" >
+		  	<option value="합격">합격</option>		
+		  	<option value="불합격">불합격</option>		    
+            </select>
+          
+  	<!-- 		
+			 <input type="text"  name="t_year">
+	 -->
+			<label>기준서(PDF)</label>
+			<input type="file" id="fileInput" name="uploadFile" accept="application/pdf">
 
+			<label>파일 이름</label>
+			<input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)">
+
+  			 <label>비고</label>
+			 <input type="text"  name="t_ok" placeholder="비고">
 	
             <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
@@ -335,7 +350,7 @@
 
 <script>
 
-let now_page_code = "d02";
+let now_page_code = "d01";
 
 $(document).ready(function () {
     // 페이지 로딩 시 데이터 불러오기
@@ -344,12 +359,22 @@ $(document).ready(function () {
     const currentYear = new Date().getFullYear();
 	$('#t_year').val(currentYear);
 
+	 document.getElementById("fileInput").addEventListener("change", function () {
+		    const file = this.files[0];
+		    if (file) {
+		      document.getElementById("fileName").value = file.name;
+		    } else {
+		      document.getElementById("fileName").value = "";
+		    }
+		  });
+
+
     getDataList();
 
     
     $(".insert-button").click(function () {
         const t_year = $("#t_year").val() || ""; 
-  
+        $("#modal_t_year").val(t_year); 
 
         // 폼 초기화
         $("#corrForm")[0].reset(); 
@@ -382,7 +407,7 @@ $(document).ready(function () {
             t_year: t_year
         });
 
-        dataTable.setData("/chunil/quality/heatTreatingOil/list", {
+        dataTable.setData("/chunil/quality/tusTest/list", {
          /*    mch_name: equipmentName, */
             t_year: t_year
         });
@@ -405,7 +430,7 @@ $("#saveCorrStatus").click(function (event) {
     }
 
     $.ajax({
-        url: "/chunil/quality/heatTreatingOil/insert",
+        url: "/chunil/quality/tusTest/insert",
         type: "POST",
         data: formData, 
         dataType: "json",
@@ -437,7 +462,7 @@ $("#saveCorrStatus").click(function (event) {
         rowVertAlign: "middle",
         ajaxConfig: "POST",
         ajaxLoader: false,
-        ajaxURL: "/chunil/quality/heatTreatingOil/list",
+        ajaxURL: "/chunil/quality/tusTest/list",
 
         ajaxParams: {
 /*             mch_name: $("#mch_name").val() || "", */
@@ -455,14 +480,25 @@ $("#saveCorrStatus").click(function (event) {
             { title: "NO2", field: "id", visible: false },
 
             { title: "No", formatter: "rownum", hozAlign: "center", width: 70, headerSort: false },
-            { title: "년/월", field: "y_month", width: 200, hozAlign: "center"  },
-            { title: "년", field: "year", width: 290, hozAlign: "center",visible: false },
-            { title: "동점도</br>15~18", field: "tx1", width: 290, hozAlign: "center" },
-            { title: "수분</br>0.05이하", field: "tx2", width: 290, hozAlign: "center" },
-         
-            { title: "최대냉각속도</br> 93.7 ~ 114.6", field: "tx3", width: 290, hozAlign: "center" },
+            { title: "연도", field: "t_year", width: 190, hozAlign: "center" },
+            { title: "월", field: "t_month", width: 190, hozAlign: "center" },
+          /*   { title: "구분", field: "t_gb", width: 200, hozAlign: "center" }, */
+            { title: "측정일", field: "t_day", width: 190, hozAlign: "center" },
             
-            {title: "전산가</br>1.0이하", field: "tx4", width: 290, hozAlign: "center"}
+            {title: "합부", field: "t_gb", width: 190, hozAlign: "center"},
+            {
+                title: "첨부 파일",
+                field: "t_url",
+                hozAlign: "center",
+                width: 360,
+                formatter: function(cell, formatterParams, onRendered) {
+                    const fileName = cell.getValue();
+                    if (!fileName) return "";
+                    return '<a href="/chunil/download_tusTest?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+                }
+
+            },
+            { title: "비고", field: "t_ok", width: 300, hozAlign: "center" }
         ],
 
         rowClick: function (e, row) {
@@ -476,14 +512,15 @@ $("#saveCorrStatus").click(function (event) {
             const rowData = row.getData();
 
           
-            $("input[name='id']").val(rowData.id);
-            $("input[name='year']").val(rowData.year);
-            $("input[name='y_month']").val(rowData.y_month);
-            $("input[name='tx1']").val(rowData.tx1);
-            $("input[name='tx2']").val(rowData.tx2);
-            $("input[name='tx3']").val(rowData.tx3);
-            $("input[name='tx4']").val(rowData.tx4);
-            
+            $("input[name='t_year']").val(rowData.t_year);
+            $("input[name='t_month']").val(rowData.t_month);
+            $("input[name='t_gb']").val(rowData.t_gb);
+            $("input[name='t_day']").val(rowData.t_day);
+
+            $("input[name='t_result']").val(rowData.t_result);
+            $("input[name='t_ok']").val(rowData.t_ok);
+            $("input[name='id']").val(rowData.id); 
+            $("input[name='t_url']").val(rowData.t_url);
             let modal = $("#modalContainer");
             modal.show();
             modal.addClass("show");
@@ -518,7 +555,7 @@ $("#saveCorrStatus").click(function (event) {
 	    var requestData = JSON.stringify({ "id": id });
 
 	    $.ajax({
-	        url: "/chunil/quality/heatTreatingOil/del",
+	        url: "/chunil/quality/tusTest/del",
 	        type: "POST",
 	        contentType: "application/json",
 	        data: requestData,
@@ -537,28 +574,28 @@ $("#saveCorrStatus").click(function (event) {
     $(".excel-button").on("click", function () {
   	  console.log("엑셀 다운로드 버튼 클릭됨"); 
 
-  	 /*  const equipmentName = $("#mch_name").val() || ""; */
+  	  const equipmentName = $("#mch_name").val() || "";
       const t_year = $("#t_year").val() || "";
    
 
       console.log("엑셀 다운로드 요청 값 =>", {
- /*          mch_name: equipmentName, */
+          mch_name: equipmentName,
           t_year: t_year
        
       });
     	  
         
       $.ajax({
-          url: "/chunil/quality/heatTreatingOil/excel",
+          url: "/chunil/quality/tusTest/excel",
           type: "post",
           data: {
-         /*      mch_name: equipmentName, */
+              mch_name: equipmentName,
               t_year: t_year
           },
           dataType: "json",
           success: function (result) {
               console.log(result);
-              alert("D:\\chunil_양식\\열처리유 저장 완료되었습니다.");
+              alert("D:\\chunil_양식\\온도 균일성 저장 완료되었습니다.");
           },
           error: function (xhr, status, error) {
               alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");

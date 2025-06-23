@@ -18,7 +18,7 @@ public class ConditionDaoImpl implements ConditionDao {
 
 
 	//기준정보 조회
-	@Override
+	@Override			
 	public List<Condition> getStandardDataList(Condition condition) {
 		return sqlSession.selectList("condition.getStandardDataList", condition);
 	}
@@ -56,18 +56,18 @@ public class ConditionDaoImpl implements ConditionDao {
 
 	//-----------------------------------------------------------------
 
-	//기준정보
+	//기준정보 이거씀
 	@Override
 	public List<Condition> getStandardInfoList(Condition params) {
 
 		return sqlSession.selectList("condition.getStandardInfoList", params);
 	}
-
+	//기준정보 이거씀
 	@Override
 	public void saveDivisionWeight(Condition condition) {
 		sqlSession.insert("condition.saveDivisionWeight",condition);
 	}
-
+	//기준정보 이거씀
 	@Override
 	public void delDivisionWeight(Condition condition) {
 		sqlSession.delete("condition.delDivisionWeight",condition);

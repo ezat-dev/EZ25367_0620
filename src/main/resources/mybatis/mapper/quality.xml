@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="quality">
+
+	<select id="getqualityList" parameterType="Quality" resultType="Quality">
+	    SELECT *
+	    FROM tb_tustest
+	    <where>
+	        <if test="t_year != null and t_year != ''">
+	            AND t_year = #{t_year}
+	        </if>
+	    </where>
+	    ORDER BY id ASC
+	</select>
+
+
+	<insert id="savetusTest" parameterType="Quality">
+	    INSERT INTO tb_tustest (
+	        id, mch_name, t_year, t_month, t_url, t_ok,
+	        t_gb, t_day
+	    ) VALUES (
+	        #{id}, #{mch_name}, #{t_year}, #{t_month}, #{t_url}, #{t_ok},
+	        #{t_gb}, #{t_day}
+	    )
+	    ON DUPLICATE KEY UPDATE
+	        mch_name = VALUES(mch_name),
+	        t_year = VALUES(t_year),
+	        t_month = VALUES(t_month),
+	        t_url = VALUES(t_url),
+	        t_ok = VALUES(t_ok),
+	        t_gb = VALUES(t_gb),
+	        t_day = VALUES(t_day)
+
+	</insert>
+
+
+    <!-- 3. deltusTest: id 기준으로 삭제 -->
+    <delete id="deltusTest" parameterType="Quality">
+        DELETE FROM tb_tustest
+        WHERE id = #{id}
+    </delete>
+    
+    
+    <select id="getHeatTreatingOil" parameterType="Quality" resultType="Quality">
+    SELECT *
+    FROM tb_heattreatingoil
+    <where>
+        <if test="t_year != null and t_year != ''">
+            AND year = #{t_year}
+        </if>
+    </where>
+    ORDER BY id ASC
+	</select>
+	
+	
+    <insert id="saveHeatTreatingOil" parameterType="Quality">
+    INSERT INTO tb_heattreatingoil (
+        id, year, y_month, tx1, tx2, tx3, tx4
+    ) VALUES (
+        #{id}, #{year}, #{y_month}, #{tx1}, #{tx2}, #{tx3}, #{tx4}
+    )
+    ON DUPLICATE KEY UPDATE
+        year = VALUES(year),
+        y_month = VALUES(y_month),
+        tx1 = VALUES(tx1),
+        tx2 = VALUES(tx2),
+        tx3 = VALUES(tx3),
+        tx4 = VALUES(tx4)
+	</insert>
+    
+    
+    <update id="delHeatTreatingOil" parameterType="Quality">
+    UPDATE tb_heattreatingoil
+    SET
+        tx1 = '',
+        tx2 = '',
+        tx3 = '',
+        tx4 = ''
+    WHERE id = #{id}
+	</update>
+    
+   
+</mapper>

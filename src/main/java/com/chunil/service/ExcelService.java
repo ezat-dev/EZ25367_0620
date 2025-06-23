@@ -22,16 +22,17 @@ import com.google.common.collect.Table.Cell;
 public class ExcelService {
 
     private static final String[] fields = {
-    		"group_id",
-      	    "item_cd",
-      	    "item_nm",
-      	    "mach_main",
-      	    "mach_main_weight",
-      	    "coating_nm",
-      	    "mach_sub",
-      	    "mach_sub_weight",
-      	    "mlpl_weight",
-      	    "kblack_weight"
+    		"equipment",
+    		"item_no",
+      	    "item_name",
+      	    "steel_grade",
+      	    "t_grade",
+      	    "apply_temp1",
+      	    "apply_temp2",
+      	    "apply_cp",
+      	    "std_load",
+      	    "hardness_req"
+      	    
     };
     
     //스페어
@@ -68,17 +69,27 @@ public class ExcelService {
                 XSSFCell cell = row.getCell(j + 1);
                 String value = (cell != null) ? getCellValue(cell) : "";
 
-               
-                if (value.isEmpty() && fields[j].equals("item_cd")) {
+                if (value.isEmpty() && fields[j].equals("item_no")) {
                     workbook.close();
-                    throw new IllegalArgumentException("엑셀 파일에 도금품번이 누락된 행이 있습니다. 행 번호: " + (i - 5));
+                    throw new IllegalArgumentException("엑셀 파일에 품번이 누락된 행이 있습니다. 행 번호: " + (i - 5));
                 }
 
                 try {
                     Field field = Condition.class.getDeclaredField(fields[j]);
                     field.setAccessible(true);
-                    field.set(condition, value);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
+
+                    Class<?> fieldType = field.getType();
+
+                    if (fieldType == Integer.class) {
+                        field.set(condition, value.isEmpty() ? null : (int) Double.parseDouble(value));
+                    } else if (fieldType == Float.class) {
+                        field.set(condition, value.isEmpty() ? null : Float.parseFloat(value));
+                    } else {
+                        field.set(condition, value); // String 처리
+                    }
+
+                } catch (NoSuchFieldException | IllegalAccessException | NumberFormatException e) {
+                    System.err.println("Error setting field [" + fields[j] + "] with value [" + value + "] at row " + i);
                     e.printStackTrace();
                 }
 

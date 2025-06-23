@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.chunil.domain.Condition;
-import com.chunil.domain.StandardData;
+
 
 
 @Repository
