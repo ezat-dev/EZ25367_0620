@@ -22,7 +22,7 @@
             margin-top: 1%;
         }
         .tab {
-            width: 88%;
+            width: 100%;
             margin-bottom: 37px;
             margin-top: 5px;
             height: 45px;
@@ -305,7 +305,7 @@
 <div id="modalContainer" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>온도 균일성 테스트</h2>
+        <h2>F/Proof</h2>
        <form id="corrForm" autocomplete="off" enctype="multipart/form-data">
             
  			<input type="hidden" name="id" id="id">
@@ -314,18 +314,8 @@
 	      <label>년/월</label>
 	      <input type="text"  class="monthSet" name="y_month" placeholder="예: 2024/06" style="text-align: left;">
 	
-	      <label>동점도 (15~18)</label>
-	      <input type="text" name="tx1" placeholder="동점도 입력" style="text-align: left;">
-	
-	      <label>수분 (0.05 이하)</label>
-	      <input type="text" name="tx2" placeholder="수분 입력" style="text-align: left;">
-	
-	      <label>최대냉각속도 (93.7 ~ 114.6)</label>
-	      <input type="text" name="tx3" placeholder="최대냉각속도 입력" style="text-align: left;">
-	
-	      <label>전산가 (1.0 이하)</label>
-	      <input type="text" name="tx4" placeholder="전산가 입력" style="text-align: left;">
 
+	
 	
             <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
@@ -341,9 +331,9 @@ $(document).ready(function () {
     // 페이지 로딩 시 데이터 불러오기
  
 
-    const currentYear = new Date().getFullYear();
-	$('#y_m').val(currentYear);
-
+    const currentYear  = new Date().getFullYear();
+  	const currentMonth = String(new Date().getMonth() + 1).padStart(2, '0');  // 1~12 → "01"~"12"
+  	$('#y_m').val(currentYear + '/' + currentMonth);
     getDataList();
 
     
@@ -382,7 +372,7 @@ $(document).ready(function () {
             y_m: y_m
         });
 
-        dataTable.setData("/chunil/quality/heatTreatingOil/list", {
+        dataTable.setData("/chunil/quality/fProof/list", {
          /*    mch_name: equipmentName, */
             y_m: y_m
         });
@@ -405,7 +395,7 @@ $("#saveCorrStatus").click(function (event) {
     }
 
     $.ajax({
-        url: "/chunil/quality/heatTreatingOil/insert",
+        url: "/chunil/quality/fProof/insert",
         type: "POST",
         data: formData, 
         dataType: "json",
@@ -428,70 +418,110 @@ $("#saveCorrStatus").click(function (event) {
 
 
 
-  function getDataList() {
+function getDataList() {
+    // 1) 명시적으로 나열한 컬럼 정의
+    const columns = [
+        { title: "NO2",      field: "id",        visible: false },
+        { title: "No",       formatter: "rownum", hozAlign: "center", width: 40, headerSort: false },
+        { title: "년/월",     field: "y_m",       hozAlign: "center", width: 120 },
+        { title: "설비",      field: "mch_name",  hozAlign: "center", width: 100, visible: false },
+        { title: "점검 항목",  field: "standard",  hozAlign: "center", width: 120 },
+
+        // 1일 ~ 31일
+        { title: "1일",  field: "m_1",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "2일",  field: "m_2",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "3일",  field: "m_3",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "4일",  field: "m_4",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "5일",  field: "m_5",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "6일",  field: "m_6",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "7일",  field: "m_7",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "8일",  field: "m_8",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "9일",  field: "m_9",  hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "10일", field: "m_10", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "11일", field: "m_11", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "12일", field: "m_12", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "13일", field: "m_13", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "14일", field: "m_14", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "15일", field: "m_15", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "16일", field: "m_16", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "17일", field: "m_17", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "18일", field: "m_18", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "19일", field: "m_19", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "20일", field: "m_20", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "21일", field: "m_21", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "22일", field: "m_22", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "23일", field: "m_23", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "24일", field: "m_24", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "25일", field: "m_25", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "26일", field: "m_26", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "27일", field: "m_27", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "28일", field: "m_28", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "29일", field: "m_29", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "30일", field: "m_30", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+        { title: "31일", field: "m_31", hozAlign: "center", width: 76, editor: "input", headerSort: false },
+    ];
+
+    // 2) Tabulator 생성
     dataTable = new Tabulator("#dataList", {
-        height: "760px",
+        height: "810px",
         layout: "fitColumns",
         headerHozAlign: "center",
         columnHeaderVertAlign: "middle",
         rowVertAlign: "middle",
-        ajaxConfig: "POST",
-        ajaxLoader: false,
-        ajaxURL: "/chunil/quality/heatTreatingOil/list",
 
+        ajaxConfig: "POST",
+        ajaxURL: "/chunil/quality/fProof/list",
         ajaxParams: {
-/*             mch_name: $("#mch_name").val() || "", */
             y_m: $("#y_m").val() || ""
         },
-
-        placeholder: "조회된 데이터가 없습니다.",
+        placeholder: "데이터가 없습니다.",
 
         ajaxResponse: function (url, params, response) {
-            console.log("서버 응답 데이터:", response);
+            console.log("서버 응답:", response);
             return response;
         },
 
-        columns: [
-            { title: "NO2", field: "id", visible: false },
+        columns: columns,
 
-            { title: "No", formatter: "rownum", hozAlign: "center", width: 70, headerSort: false },
-            { title: "년/월", field: "y_month", width: 200, hozAlign: "center"  },
-            { title: "년", field: "year", width: 290, hozAlign: "center",visible: false },
-            { title: "동점도</br>15~18", field: "tx1", width: 290, hozAlign: "center" },
-            { title: "수분</br>0.05이하", field: "tx2", width: 290, hozAlign: "center" },
-         
-            { title: "최대냉각속도</br> 93.7 ~ 114.6", field: "tx3", width: 290, hozAlign: "center" },
-            
-            {title: "전산가</br>1.0이하", field: "tx4", width: 290, hozAlign: "center"}
-        ],
+        // 셀 수정 후 즉시 업데이트
+        cellEdited: function (cell) {
+            const id     = cell.getRow().getData().id;
+            const column = cell.getField();
+            const value  = cell.getValue();
 
-        rowClick: function (e, row) {
-            $("#dataList .tabulator-row").removeClass("row_select");  
-            row.getElement().classList.add("row_select");
-            selectedRow = row;
-            console.log("선택된 row id:", selectedRow.getData().id);
+            console.log("수정된 셀 →", { id, column, value });
+
+            $.ajax({
+                url: "/chunil/quality/fProof/insert",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ id, column, value }),
+                success: function (res) {
+                    if (res.result === "success") {
+                        console.log("업데이트 성공");
+                    } else {
+                        alert("업데이트 실패: " + res.message);
+                        cell.restoreOldValue();
+                    }
+                },
+                error: function () {
+                    alert("서버 오류");
+                    cell.restoreOldValue();
+                }
+            });
         },
 
+        // 행 더블클릭 모달 팝업
         rowDblClick: function (e, row) {
-            const rowData = row.getData();
-
-          
-            $("input[name='id']").val(rowData.id);
-            $("input[name='year']").val(rowData.year);
-            $("input[name='y_month']").val(rowData.y_month);
-            $("input[name='tx1']").val(rowData.tx1);
-            $("input[name='tx2']").val(rowData.tx2);
-            $("input[name='tx3']").val(rowData.tx3);
-            $("input[name='tx4']").val(rowData.tx4);
-            
-            let modal = $("#modalContainer");
-            modal.show();
-            modal.addClass("show");
-
+/*             const d = row.getData();
+            $("[name='id']"      ).val(d.id);
+            $("[name='y_month']" ).val(d.y_m);
+            $("[name='standard']").val(d.standard);
+            $("#modalContainer").show().addClass("show"); */
         }
-
     });
 }
+
 
 
 
@@ -518,7 +548,7 @@ $("#saveCorrStatus").click(function (event) {
 	    var requestData = JSON.stringify({ "id": id });
 
 	    $.ajax({
-	        url: "/chunil/quality/heatTreatingOil/del",
+	        url: "/chunil/quality/fProof/del",
 	        type: "POST",
 	        contentType: "application/json",
 	        data: requestData,
@@ -549,7 +579,7 @@ $("#saveCorrStatus").click(function (event) {
     	  
         
       $.ajax({
-          url: "/chunil/quality/heatTreatingOil/excel",
+          url: "/chunil/quality/fProof/excel",
           type: "post",
           data: {
          /*      mch_name: equipmentName, */

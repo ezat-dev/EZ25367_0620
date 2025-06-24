@@ -257,9 +257,9 @@ function pageObject(paramKey){
 			
 	};
 	
-/*	
-	console.log(obj);
-	console.log(obj[paramKey][0]);*/
+
+	//console.log(obj);
+	//console.log(obj[paramKey][0]);*/
 	
 	return obj[paramKey];
 }

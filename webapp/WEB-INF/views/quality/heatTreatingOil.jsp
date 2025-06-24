@@ -282,9 +282,9 @@
                     <img src="/chunil/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
  -->
-           <!--      <button class="delete-button">
+            <button class="delete-button">
 				    <img src="/chunil/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
-				</button> -->
+				</button>
 				
 				<button class="excel-button">
                     <img src="/chunil/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download

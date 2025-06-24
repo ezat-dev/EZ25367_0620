@@ -1,6 +1,7 @@
 package com.chunil.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,22 @@ public class QualityServiceImpl implements QualityService{
     public void delHeatTreatingOil(Quality quality) {
 		qualityDao.delHeatTreatingOil(quality);
     }
+	
+	
+	@Override
+	public List<Quality> getFproof(Quality quality) {
+	    return qualityDao.getFproof(quality); 	   
+	}
+	@Override
+    public void saveFproof(Map<String, Object> param) {
+		qualityDao.saveFproof(param);
+    }
+	@Override
+    public void delFproof(Quality quality) {
+		qualityDao.delFproof(quality);
+    }
+	
+	
 	
 	
 }

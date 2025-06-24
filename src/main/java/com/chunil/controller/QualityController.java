@@ -44,6 +44,12 @@ public class QualityController {
     @RequestMapping(value= "/quality/heatTreatingOil", method = RequestMethod.GET)
     public String heatTreatingOil(Model model) {
         return "/quality/heatTreatingOil.jsp"; // 
+    }
+    
+    //열처리유 성상분석  
+    @RequestMapping(value= "/quality/fProof", method = RequestMethod.GET)
+    public String fProof(Model model) {
+        return "/quality/fProof.jsp"; 
     } 
    
    
@@ -208,20 +214,27 @@ public class QualityController {
     @ResponseBody
     public List<Quality> getfProof(Quality quality) {
 		
-        return qualityService.getfProof(quality);
+        if (quality.getY_m() != null && quality.getY_m().contains("-")) {
+            quality.setY_m( quality.getY_m().replace('-', '/') );
+        }
+    	
+        return qualityService.getFproof(quality);
     }
     
     @RequestMapping(value = "/quality/fProof/insert", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> savefProof(@ModelAttribute Quality quality) {
+    public Map<String, Object> saveFproof(@RequestBody Map<String, Object> param) {       
         Map<String, Object> rtnMap = new HashMap<>();
-
-
-        qualityService.savefProof(quality);
-
-        rtnMap.put("result", "success");
+        try {
+            qualityService.saveFproof(param);
+            rtnMap.put("result", "success");
+        } catch (Exception e) {
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", e.getMessage());
+        }
         return rtnMap;
     }
+
 
     @RequestMapping(value = "/quality/fProof/del", method = RequestMethod.POST)
     @ResponseBody
@@ -233,7 +246,7 @@ public class QualityController {
             return rtnMap;
         }
 
-        qualityService.delfProof(quality);
+        qualityService.delFproof(quality);
 
         rtnMap.put("data", "success"); 
         return rtnMap;
