@@ -2,6 +2,67 @@ package com.chunil.domain;
 
 public class Monitoring {
 
+		private String startDate;
+		private String endDate;
+	
+	 	private String regtime;
+
+	    private Integer hw_pv;
+	    private Integer qf1_pv;
+	    private Integer qf2_pv;
+	    private Integer qf3_pv;
+	    private Integer qf4_pv;
+	    private Integer qf5_pv;
+	    private Integer oil_cool_pv;
+	    private Integer oil_heat_pv;
+	    private Float cp_a_pv;
+	    private Float cp_b_pv;
+	    private Integer rw_pv;
+	    private Integer tf1_pv;
+	    private Integer tf2_pv;
+	    private Integer tf3_pv;
+	    private Integer tf4_pv;
+	    private Integer tf5_pv;
+	    private Integer cold_cool_pv;
+	    private Integer cold_heat_pv;
+
+	    private Integer hw_sp;
+	    private Integer qf1_sp;
+	    private Integer qf2_sp;
+	    private Integer qf3_sp;
+	    private Integer qf4_sp;
+	    private Integer qf5_sp;
+	    private Integer oil_cool_sp;
+	    private Integer oil_heat_sp;
+	    private Float cp_a_sp;
+	    private Float cp_b_sp;
+	    private Integer rw_sp;
+	    private Integer tf1_sp;
+	    private Integer tf2_sp;
+	    private Integer tf3_sp;
+	    private Integer tf4_sp;
+	    private Integer tf5_sp;
+	    private Integer cold_cool_sp;
+	    private Integer cold_heat_sp;
+
+	    private Integer qf_inv_pv;
+	    private Integer qt_inv_pv;
+	    private Integer cleaner1_inv_pv;
+	    private Integer cleaner2_inv_pv;
+	    private Integer tf_inv_pv;
+	    private Integer agi_inv_pv;
+
+	    private Integer qf_inv_sp;
+	    private Integer qt_inv_sp;
+	    private Integer cleaner1_inv_sp;
+	    private Integer cleaner2_inv_sp;
+	    private Integer tf_inv_sp;
+	    private Integer agi_inv_sp;
+	
+	
+	
+	
+	
 	private int alarm_1;
 	private int alarm_2;
 	private int alarm_3;
@@ -101,6 +162,312 @@ public class Monitoring {
 	
 	
 	
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getRegtime() {
+		return regtime;
+	}
+	public void setRegtime(String regtime) {
+		this.regtime = regtime;
+	}
+	public Integer getHw_pv() {
+		return hw_pv;
+	}
+	public void setHw_pv(Integer hw_pv) {
+		this.hw_pv = hw_pv;
+	}
+	public Integer getQf1_pv() {
+		return qf1_pv;
+	}
+	public void setQf1_pv(Integer qf1_pv) {
+		this.qf1_pv = qf1_pv;
+	}
+	public Integer getQf2_pv() {
+		return qf2_pv;
+	}
+	public void setQf2_pv(Integer qf2_pv) {
+		this.qf2_pv = qf2_pv;
+	}
+	public Integer getQf3_pv() {
+		return qf3_pv;
+	}
+	public void setQf3_pv(Integer qf3_pv) {
+		this.qf3_pv = qf3_pv;
+	}
+	public Integer getQf4_pv() {
+		return qf4_pv;
+	}
+	public void setQf4_pv(Integer qf4_pv) {
+		this.qf4_pv = qf4_pv;
+	}
+	public Integer getQf5_pv() {
+		return qf5_pv;
+	}
+	public void setQf5_pv(Integer qf5_pv) {
+		this.qf5_pv = qf5_pv;
+	}
+	public Integer getOil_cool_pv() {
+		return oil_cool_pv;
+	}
+	public void setOil_cool_pv(Integer oil_cool_pv) {
+		this.oil_cool_pv = oil_cool_pv;
+	}
+	public Integer getOil_heat_pv() {
+		return oil_heat_pv;
+	}
+	public void setOil_heat_pv(Integer oil_heat_pv) {
+		this.oil_heat_pv = oil_heat_pv;
+	}
+	public Float getCp_a_pv() {
+		return cp_a_pv;
+	}
+	public void setCp_a_pv(Float cp_a_pv) {
+		this.cp_a_pv = cp_a_pv;
+	}
+	public Float getCp_b_pv() {
+		return cp_b_pv;
+	}
+	public void setCp_b_pv(Float cp_b_pv) {
+		this.cp_b_pv = cp_b_pv;
+	}
+	public Integer getRw_pv() {
+		return rw_pv;
+	}
+	public void setRw_pv(Integer rw_pv) {
+		this.rw_pv = rw_pv;
+	}
+	public Integer getTf1_pv() {
+		return tf1_pv;
+	}
+	public void setTf1_pv(Integer tf1_pv) {
+		this.tf1_pv = tf1_pv;
+	}
+	public Integer getTf2_pv() {
+		return tf2_pv;
+	}
+	public void setTf2_pv(Integer tf2_pv) {
+		this.tf2_pv = tf2_pv;
+	}
+	public Integer getTf3_pv() {
+		return tf3_pv;
+	}
+	public void setTf3_pv(Integer tf3_pv) {
+		this.tf3_pv = tf3_pv;
+	}
+	public Integer getTf4_pv() {
+		return tf4_pv;
+	}
+	public void setTf4_pv(Integer tf4_pv) {
+		this.tf4_pv = tf4_pv;
+	}
+	public Integer getTf5_pv() {
+		return tf5_pv;
+	}
+	public void setTf5_pv(Integer tf5_pv) {
+		this.tf5_pv = tf5_pv;
+	}
+	public Integer getCold_cool_pv() {
+		return cold_cool_pv;
+	}
+	public void setCold_cool_pv(Integer cold_cool_pv) {
+		this.cold_cool_pv = cold_cool_pv;
+	}
+	public Integer getCold_heat_pv() {
+		return cold_heat_pv;
+	}
+	public void setCold_heat_pv(Integer cold_heat_pv) {
+		this.cold_heat_pv = cold_heat_pv;
+	}
+	public Integer getHw_sp() {
+		return hw_sp;
+	}
+	public void setHw_sp(Integer hw_sp) {
+		this.hw_sp = hw_sp;
+	}
+	public Integer getQf1_sp() {
+		return qf1_sp;
+	}
+	public void setQf1_sp(Integer qf1_sp) {
+		this.qf1_sp = qf1_sp;
+	}
+	public Integer getQf2_sp() {
+		return qf2_sp;
+	}
+	public void setQf2_sp(Integer qf2_sp) {
+		this.qf2_sp = qf2_sp;
+	}
+	public Integer getQf3_sp() {
+		return qf3_sp;
+	}
+	public void setQf3_sp(Integer qf3_sp) {
+		this.qf3_sp = qf3_sp;
+	}
+	public Integer getQf4_sp() {
+		return qf4_sp;
+	}
+	public void setQf4_sp(Integer qf4_sp) {
+		this.qf4_sp = qf4_sp;
+	}
+	public Integer getQf5_sp() {
+		return qf5_sp;
+	}
+	public void setQf5_sp(Integer qf5_sp) {
+		this.qf5_sp = qf5_sp;
+	}
+	public Integer getOil_cool_sp() {
+		return oil_cool_sp;
+	}
+	public void setOil_cool_sp(Integer oil_cool_sp) {
+		this.oil_cool_sp = oil_cool_sp;
+	}
+	public Integer getOil_heat_sp() {
+		return oil_heat_sp;
+	}
+	public void setOil_heat_sp(Integer oil_heat_sp) {
+		this.oil_heat_sp = oil_heat_sp;
+	}
+	public Float getCp_a_sp() {
+		return cp_a_sp;
+	}
+	public void setCp_a_sp(Float cp_a_sp) {
+		this.cp_a_sp = cp_a_sp;
+	}
+	public Float getCp_b_sp() {
+		return cp_b_sp;
+	}
+	public void setCp_b_sp(Float cp_b_sp) {
+		this.cp_b_sp = cp_b_sp;
+	}
+	public Integer getRw_sp() {
+		return rw_sp;
+	}
+	public void setRw_sp(Integer rw_sp) {
+		this.rw_sp = rw_sp;
+	}
+	public Integer getTf1_sp() {
+		return tf1_sp;
+	}
+	public void setTf1_sp(Integer tf1_sp) {
+		this.tf1_sp = tf1_sp;
+	}
+	public Integer getTf2_sp() {
+		return tf2_sp;
+	}
+	public void setTf2_sp(Integer tf2_sp) {
+		this.tf2_sp = tf2_sp;
+	}
+	public Integer getTf3_sp() {
+		return tf3_sp;
+	}
+	public void setTf3_sp(Integer tf3_sp) {
+		this.tf3_sp = tf3_sp;
+	}
+	public Integer getTf4_sp() {
+		return tf4_sp;
+	}
+	public void setTf4_sp(Integer tf4_sp) {
+		this.tf4_sp = tf4_sp;
+	}
+	public Integer getTf5_sp() {
+		return tf5_sp;
+	}
+	public void setTf5_sp(Integer tf5_sp) {
+		this.tf5_sp = tf5_sp;
+	}
+	public Integer getCold_cool_sp() {
+		return cold_cool_sp;
+	}
+	public void setCold_cool_sp(Integer cold_cool_sp) {
+		this.cold_cool_sp = cold_cool_sp;
+	}
+	public Integer getCold_heat_sp() {
+		return cold_heat_sp;
+	}
+	public void setCold_heat_sp(Integer cold_heat_sp) {
+		this.cold_heat_sp = cold_heat_sp;
+	}
+	public Integer getQf_inv_pv() {
+		return qf_inv_pv;
+	}
+	public void setQf_inv_pv(Integer qf_inv_pv) {
+		this.qf_inv_pv = qf_inv_pv;
+	}
+	public Integer getQt_inv_pv() {
+		return qt_inv_pv;
+	}
+	public void setQt_inv_pv(Integer qt_inv_pv) {
+		this.qt_inv_pv = qt_inv_pv;
+	}
+	public Integer getCleaner1_inv_pv() {
+		return cleaner1_inv_pv;
+	}
+	public void setCleaner1_inv_pv(Integer cleaner1_inv_pv) {
+		this.cleaner1_inv_pv = cleaner1_inv_pv;
+	}
+	public Integer getCleaner2_inv_pv() {
+		return cleaner2_inv_pv;
+	}
+	public void setCleaner2_inv_pv(Integer cleaner2_inv_pv) {
+		this.cleaner2_inv_pv = cleaner2_inv_pv;
+	}
+	public Integer getTf_inv_pv() {
+		return tf_inv_pv;
+	}
+	public void setTf_inv_pv(Integer tf_inv_pv) {
+		this.tf_inv_pv = tf_inv_pv;
+	}
+	public Integer getAgi_inv_pv() {
+		return agi_inv_pv;
+	}
+	public void setAgi_inv_pv(Integer agi_inv_pv) {
+		this.agi_inv_pv = agi_inv_pv;
+	}
+	public Integer getQf_inv_sp() {
+		return qf_inv_sp;
+	}
+	public void setQf_inv_sp(Integer qf_inv_sp) {
+		this.qf_inv_sp = qf_inv_sp;
+	}
+	public Integer getQt_inv_sp() {
+		return qt_inv_sp;
+	}
+	public void setQt_inv_sp(Integer qt_inv_sp) {
+		this.qt_inv_sp = qt_inv_sp;
+	}
+	public Integer getCleaner1_inv_sp() {
+		return cleaner1_inv_sp;
+	}
+	public void setCleaner1_inv_sp(Integer cleaner1_inv_sp) {
+		this.cleaner1_inv_sp = cleaner1_inv_sp;
+	}
+	public Integer getCleaner2_inv_sp() {
+		return cleaner2_inv_sp;
+	}
+	public void setCleaner2_inv_sp(Integer cleaner2_inv_sp) {
+		this.cleaner2_inv_sp = cleaner2_inv_sp;
+	}
+	public Integer getTf_inv_sp() {
+		return tf_inv_sp;
+	}
+	public void setTf_inv_sp(Integer tf_inv_sp) {
+		this.tf_inv_sp = tf_inv_sp;
+	}
+	public Integer getAgi_inv_sp() {
+		return agi_inv_sp;
+	}
+	public void setAgi_inv_sp(Integer agi_inv_sp) {
+		this.agi_inv_sp = agi_inv_sp;
+	}
 	public int getAlarm_1() {
 		return alarm_1;
 	}

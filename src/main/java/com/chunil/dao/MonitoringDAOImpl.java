@@ -20,4 +20,9 @@ public class MonitoringDAOImpl implements MonitoringDAO{
       
         return sqlSession.selectList("monitoring.gettrend", monitoring);
     }
+	
+	@Override
+	public Monitoring alarmList() {
+		return sqlSession.selectOne("monitoring.alarmList");
+	}
 }

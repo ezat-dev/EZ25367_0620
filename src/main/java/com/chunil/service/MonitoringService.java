@@ -10,5 +10,5 @@ public interface MonitoringService {
 	List<Monitoring> gettrend(Monitoring monitoring); 
 
 	
-
+	Monitoring alarmList();
 }

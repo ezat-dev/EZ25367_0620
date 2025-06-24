@@ -8,4 +8,6 @@ public interface MonitoringDAO {
 
 	
 	List<Monitoring> gettrend(Monitoring monitoring); 
+	
+	Monitoring alarmList();
 }
