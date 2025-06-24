@@ -30,4 +30,8 @@ public interface QualityService {
     
     void delFproof(Quality quality);
     
+	Quality cpkStandardList(Quality quality);
+
+	List<Quality> cpkValueList(Quality quality);
+    
 }

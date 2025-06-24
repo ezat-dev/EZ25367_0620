@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.chunil.domain.Quality;
 import com.chunil.service.QualityService;
+import com.chunil.util.CpkCalc;
 
 @Controller
 public class QualityController {
@@ -253,5 +255,162 @@ public class QualityController {
     }
     
    
+    
+    
+    
+    
+    
+  //Cpk - 이동
+    @RequestMapping(value= "/quality/cpk", method = RequestMethod.GET)
+    public String cpkInit(Model model) {
+        return "/quality/cpk.jsp"; // 
+    }
+    
+    //Cpk - 이력
+    @RequestMapping(value = "/quality/cpk/standard/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> cpkStandardList(
+    		@RequestParam String h_pnum,
+    		@RequestParam String h_sdate,
+    		@RequestParam String h_edate) {
+    	Map<String, Object> rtnMap = new HashMap<String, Object>();
+	 
+    	//선택한 품번의 기준정보
+    	Quality quality = new Quality();
+    	quality.setH_pnum(h_pnum);
+    	quality.setH_sdate(h_sdate);
+    	quality.setH_edate(h_edate);
+    	
+    	Quality standardQuality = qualityService.cpkStandardList(quality);
+    	List<Quality> rtnList = new ArrayList<Quality>();
 
+		HashMap<String, Object> rowMap = new HashMap<String, Object>();
+		rowMap.put("h_pnum", standardQuality.getH_pnum());
+		rowMap.put("h_pname", standardQuality.getH_pname());
+		rowMap.put("h_gang", standardQuality.getH_gang());
+		rowMap.put("h_t_gb", standardQuality.getH_t_gb());
+		rowMap.put("h_hard_up", standardQuality.getH_hard_up());
+		rowMap.put("h_hard_dw", standardQuality.getH_hard_dw());
+    		
+		rtnList.add(standardQuality);
+    	rtnMap.put("standardData",rtnList);
+    	
+    	CpkCalc cpkCalc = new CpkCalc();
+    	int n = 3;
+    	double d2 = 0;
+    	double a2 = 0;
+    	double d4 = 0;
+    	
+    	
+    	
+    	String xm_average = "";
+    	String xm_avgList = "";
+    	String xm_range = "";
+    	String rm_rangeList = "";
+    	
+    	double x_ucl = 0;
+    	double x_cl = 0;
+    	double x_lcl = 0;
+    	
+    	double r_ucl = 0;
+    	double r_cl = 0;
+    	
+    	//선택한 품번의 기간내에 입력한 경도값
+    	List<Quality> cpkList = qualityService.cpkValueList(quality);
+    	rtnMap.put("cpkValueData",cpkList);
+    	
+    	d2 = cpkCalc.d2(n);
+    	a2 = cpkCalc.a2(n);
+    	d4 = cpkCalc.d4(n);
+		double max_val = 0.0;
+		double min_val = 0.0;
+		
+		max_val = Double.parseDouble(standardQuality.getH_hard_up());
+		min_val = Double.parseDouble(standardQuality.getH_hard_dw());
+		
+		List<Quality> trendList = new ArrayList<Quality>();
+    	for(int i=0; i<cpkList.size(); i++) {
+    		Quality rowQuality = new Quality();
+    		int xm_av_idx = 0;
+    		int x_max = 0;
+    		int x_min = 0;
+    		
+
+    		
+    		
+    		float h_x1 = cpkList.get(i).getH_x1();
+    		float h_x2 = cpkList.get(i).getH_x2();
+    		float h_x3 = cpkList.get(i).getH_x3();
+    		
+    		if(h_x1 != 0) {xm_av_idx++;}
+    		if(h_x2 != 0) {xm_av_idx++;}
+    		if(h_x3 != 0) {xm_av_idx++;}
+    		
+    		xm_average = cpkCalc.xm_average((h_x1 + h_x2 + h_x3), xm_av_idx);
+    		xm_avgList = cpkCalc.xm_average2((h_x1 + h_x2 + h_x3), xm_av_idx);
+    		
+    		rm_rangeList = cpkCalc.xm_range(h_x1,h_x2,h_x3);
+    		xm_range = cpkCalc.xm_range2(h_x1,h_x2,h_x3);
+    		
+    		x_ucl = Double.parseDouble(cpkCalc.x_Bar_UCL(n));
+    		x_cl = Double.parseDouble(cpkCalc.x_Bar_CL());
+    		x_lcl = Double.parseDouble(cpkCalc.x_Bar_LCL(n));
+    		
+    		r_ucl = Double.parseDouble(cpkCalc.r_UCL(n));
+    		r_cl = Double.parseDouble(cpkCalc.r_CL());
+    		
+    		
+    		rowQuality.setG_ucl_x(x_ucl);
+    		rowQuality.setG_cl_x(x_cl);
+    		rowQuality.setG_lcl_x(x_lcl);
+    		
+    		rowQuality.setG_ucl_r(r_ucl);
+    		rowQuality.setG_cl_r(r_cl);
+    		rowQuality.setG_max(max_val);
+    		rowQuality.setG_min(min_val);
+    		rowQuality.setG_avg(cpkList.get(i).getH_avg());
+    		rowQuality.setG_range(cpkList.get(i).getH_range());
+//    		rowQuality.setG_tdatetime(cpkList.get(i).getH_day()+" "+);
+    		trendList.add(rowQuality);
+    	}
+    	
+    	Quality quaCpk = new Quality();
+    	
+    	String xbar_average = cpkCalc.xbar_average();
+    	String range_average = cpkCalc.range_average();
+    	String xbar_ucl = (Math.round(Double.parseDouble(cpkCalc.x_Bar_UCL(n)) * 100)/100.0)+"";
+    	String xbar_cl = (Math.round(Double.parseDouble(cpkCalc.x_Bar_CL()) * 100)/100.0)+"";
+    	String xbar_lcl = (Math.round(Double.parseDouble(cpkCalc.x_Bar_LCL(n)) * 100)/100.0)+"";
+    	
+    	String rbar_ucl = (Math.round(Double.parseDouble(cpkCalc.r_UCL(n)) * 100)/100.0)+"";
+    	String rbar_cl = (Math.round(Double.parseDouble(cpkCalc.r_CL()) * 100)/100.0)+"";
+    	String r_bar_d2 = cpkCalc.r_Bar_d2(n);
+    	String cp = cpkCalc.cp(max_val, min_val, n);
+    	String k = cpkCalc.k(max_val, min_val);
+    	String cpk = cpkCalc.cpk(max_val, min_val, n);
+    	
+    	quaCpk.setN(n);
+    	quaCpk.setD2(d2);
+    	quaCpk.setA2(a2);
+    	quaCpk.setD4(d4);
+    	
+    	quaCpk.setUcl_x(xbar_ucl);
+    	quaCpk.setCl_x(xbar_cl);
+    	quaCpk.setLcl_x(xbar_lcl);
+    	
+    	quaCpk.setUcl_r(rbar_ucl);
+    	quaCpk.setCl_r(rbar_cl);
+    	quaCpk.setLcl_r("-");
+    	
+    	quaCpk.setR_d2(r_bar_d2);
+    	quaCpk.setCp(cp);
+    	quaCpk.setK(k);
+    	quaCpk.setCpk(cpk);
+    	
+    	
+    	rtnMap.put("cpkValueCalcData",quaCpk);
+    	rtnMap.put("trendData",trendList);
+    	
+    	return rtnMap;
+    }
 }

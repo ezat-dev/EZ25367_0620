@@ -115,4 +115,12 @@
             m_31 = ''
         WHERE id = #{id}
     </update>
+    
+    
+    <select id="cpkStandardList" parameterType="quality" resultType="quality"> SELECT item_no AS h_pnum, item_name AS h_pname, steel_grade AS h_gang, t_grade AS h_t_gb, SUBSTRING_INDEX(hardness_req,'~',1) AS h_hard_dw, SUBSTRING_INDEX(hardness_req,'~',-1) AS h_hard_up FROM tb_standard WHERE item_no = #{h_pnum} </select>
+	<select id="cpkValueList" parameterType="quality" resultType="quality">
+	SELECT *, (h_max - h_min) AS h_range FROM ( SELECT h_pnum, ROUND(h_val1,2) AS h_x1, ROUND(h_val2,2) AS h_x2, ROUND(h_val3,2) AS h_x3, h_regdate, h_regtime, DATE_FORMAT(h_regdate,'%m/%d') AS h_day, LEFT(h_regtime,5) AS h_time, SUBSTRING_INDEX(hardness_req,'~',1) AS h_hard_dw, SUBSTRING_INDEX(hardness_req,'~',-1) AS h_hard_up, ROUND(( (CASE WHEN h_val1 != 0 THEN h_val1 ELSE 0 END) + (CASE WHEN h_val2 != 0 THEN h_val2 ELSE 0 END) + (CASE WHEN h_val3 != 0 THEN h_val3 ELSE 0 END) ) / NULLIF( (CASE WHEN h_val1 != 0 THEN 1 ELSE 0 END) + (CASE WHEN h_val2 != 0 THEN 1 ELSE 0 END) + (CASE WHEN h_val3 != 0 THEN 1 ELSE 0 END), 0 ),2) AS h_avg, ROUND(CASE WHEN h_val1 = 0 THEN GREATEST(h_val2, h_val3) WHEN h_val2 = 0 THEN GREATEST(h_val1, h_val3) WHEN h_val3 = 0 THEN GREATEST(h_val1, h_val2) ELSE GREATEST(h_val1, h_val2, h_val3) END,2) AS h_max, ROUND(CASE WHEN h_val1 = 0 THEN LEAST(h_val2, h_val3) WHEN h_val2 = 0 THEN LEAST(h_val1, h_val3) WHEN h_val3 = 0 THEN LEAST(h_val1, h_val2) ELSE LEAST(h_val1, h_val2, h_val3) END,2) AS h_min FROM tb_hardness A INNER JOIN tb_standard B ON A.h_pnum = B.item_no WHERE 1=1 AND A.h_regdate >= #{h_sdate} AND A.h_regdate
+	<![CDATA[ <= ]]>
+	#{h_edate} AND A.h_pnum = #{h_pnum} ) AS AA LIMIT 30
+	</select>
 </mapper>

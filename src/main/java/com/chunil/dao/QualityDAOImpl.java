@@ -61,4 +61,14 @@ public class QualityDAOImpl implements QualityDAO{
 		    public void delFproof(Quality quality) {
 		    	sqlSession.update("quality.delFproof",quality);
 		    }
+		    
+			@Override
+			public Quality cpkStandardList(Quality quality) {
+				return sqlSession.selectOne("quality.cpkStandardList",quality);
+			}
+
+			@Override
+			public List<Quality> cpkValueList(Quality quality) {
+				return sqlSession.selectList("quality.cpkValueList",quality);
+			}
 }

@@ -54,7 +54,15 @@ public class QualityServiceImpl implements QualityService{
 		qualityDao.delFproof(quality);
     }
 	
-	
+	@Override
+	public Quality cpkStandardList(Quality quality) {
+		return qualityDao.cpkStandardList(quality);
+	}
+
+	@Override
+	public List<Quality> cpkValueList(Quality quality) {
+		return qualityDao.cpkValueList(quality);
+	}	
 	
 	
 }

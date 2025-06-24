@@ -10,6 +10,9 @@ import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +48,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.chunil.domain.Condition;
 import com.chunil.domain.MachineSpare;
 import com.chunil.domain.StandardData;
+import com.chunil.domain.TempCorrectionQue;
+import com.chunil.domain.Thermocouple;
 import com.chunil.domain.UserLog;
 import com.chunil.domain.Users;
 import com.chunil.domain.Work;
@@ -970,6 +975,153 @@ public class ConditionController {
     public String inputProduct(Model model) {
         return "/condition/inputProduct.jsp"; // 
     }	
+    
+    //열전대교체이력
+    @RequestMapping(value= "/condition/thermocoupleChange", method = RequestMethod.GET)
+    public String thermocouple(Model model) {
+        return "/condition/thermocoupleChange.jsp"; // 
+    }
+    
+  //열전대교체이력 조회
+    @RequestMapping(value = "/condition/thermocoupleChange/getThermocoupleList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getThermocoupleList(@ModelAttribute Thermocouple param) {
+
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        String year = param.getYear();
+        
+        System.out.println("year : " + year);
+        List<Thermocouple> thermocoupleList = conditionService.getThermocoupleList(year);
+
+        List<Map<String, Object>> rtnList = new ArrayList<>();
+        for (int i = 0; i < thermocoupleList.size(); i++) {
+            Thermocouple tc = thermocoupleList.get(i);
+
+            Map<String, Object> row = new HashMap<>();
+            row.put("cnt", tc.getCnt());
+            row.put("hogi", tc.getHogi());
+            row.put("zone", tc.getZone());
+            row.put("change_date", tc.getChange_date());
+            row.put("filename", tc.getFilename());
+            row.put("bigo", tc.getBigo());
+            row.put("change_bdate", tc.getChange_bdate());
+            row.put("change_ndate", tc.getChange_ndate());
+            row.put("year",tc.getYear());
+
+            rtnList.add(row);
+        }
+
+        rtnMap.put("last_page", 1); 
+        rtnMap.put("data", rtnList);
+
+        return rtnMap;
+    }
+    
+    //열전대교체이력 저장
+    @RequestMapping(value = "/condition/thermocoupleChange/thermocoupleSave", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> thermocoupleSave(@ModelAttribute Thermocouple thermocouple) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            
+        	conditionService.thermocoupleSave(thermocouple);
+
+            result.put("status", "success");
+            result.put("message", "OK");
+
+        } catch (Exception e) {
+            result.put("status", "error");
+            result.put("message", e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("cnt 값: " + thermocouple.getCnt());
+        System.out.println("Update Status: " + result.get("status"));
+        System.out.println("Update Message: " + result.get("message"));
+
+        return result;
+    }
+
+
+
+
+    
+  	
+    //온도조절계보정현황
+    @RequestMapping(value= "/condition/tempCorrection", method = RequestMethod.GET)
+    public String tempCorrection(Model model) {
+        return "/condition/tempCorrection.jsp"; // 
+    }
+    
+    //온도조절계보정현황 리스트
+    @RequestMapping(value = "/condition/tempCorrection/getTempCorrectionQueList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getTempCorrectionQueList(@RequestParam(required = false) String year) {
+
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        if (year == null || year.isEmpty()) {
+            year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        }
+
+        List<TempCorrectionQue> queList = conditionService.getTempCorrectionQueList(year);
+
+        List<String> dbList = Arrays.asList("보정일", "#1", "#2", "#3", "#4", "#5","특기사항");
+
+        List<Map<String, Object>> rtnList = new ArrayList<>();
+
+        System.out.println(queList.size());
+        
+//        for (String gb : dbList) {
+            for (TempCorrectionQue item : queList) {
+/*                if (!"열처리연속로".equals(item.getHogi())) continue;
+                if (!"Y".equals(item.getYn())) continue;
+                if (!gb.equals(item.getGb())) continue;*/
+
+                Map<String, Object> row = new HashMap<>();
+                row.put("label", item.getGb());
+                row.put("pre", item.getVal1());
+                row.put("first_half", item.getVal2());
+                row.put("second_half", item.getVal3());
+                rtnList.add(row);
+            }
+//        }
+
+        rtnMap.put("last_page", 1);
+        rtnMap.put("data", rtnList);
+
+        return rtnMap;
+    }
+    
+    //온도조절계 저장
+    @RequestMapping(value = "/condition/tempCorrection/updateTempCorrectionField", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> updateTempCorrectionField(@RequestBody Map<String, Object> param) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            String gb = (String) param.get("gb"); // 구분 (ex. #1)
+            String year = (String) param.get("year");
+            String column = (String) param.get("column"); // val1, val2, val3 중 하나
+            String value = (String) param.get("value");
+
+            Map<String, Object> updateParam = new HashMap<>();
+            updateParam.put("gb", gb);
+            updateParam.put("year", year);
+            updateParam.put("column", column);
+            updateParam.put("value", value);
+
+            conditionService.updateTempCorrectionField(updateParam); // mapper 호출
+
+            result.put("status", "success");
+        } catch (Exception e) {
+            result.put("status", "error");
+            result.put("message", e.getMessage());
+            e.printStackTrace();
+        }
+
+        return result;
+    }
     
 	
 }

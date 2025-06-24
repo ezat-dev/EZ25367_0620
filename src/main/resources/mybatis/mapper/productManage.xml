@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="productManage">
+
+	<!-- 열처리 작업이력 -->
+	<select id="heatTreatmentList" parameterType="productManage" resultType="productManage">
+		SELECT A.w_date, 
+		IFNULL(LEFT(A.w_sdatetime,19),'') AS w_sdatetime, 
+		IFNULL(LEFT(A.w_edatetime,19),'') AS w_edatetime, 
+		IFNULL(LEFT(A.w_in_edatetime,19),'') AS w_in_edatetime,
+		A.w_pnum, B.item_name AS w_pname, A.w_incnt, A.w_weight,
+		B.steel_grade AS w_gang,
+		B.t_grade  AS w_t_gb,
+		B.apply_cp AS w_cp,
+		B.apply_temp1 AS w_qf,
+		B.apply_temp2 AS w_tf,
+		B.std_load AS w_std_weight, A.w_lot,
+		C.h_val1, C.h_val2, C.h_val3,
+		CASE WHEN w_in_edatetime IS NULL THEN 0 ELSE TIMESTAMPDIFF(MINUTE,w_sdatetime, w_in_edatetime) END AS w_intime,
+		ROW_NUMBER() OVER(ORDER BY regtime) AS w_idx
+		FROM tb_worklist A
+		LEFT OUTER JOIN
+			tb_standard AS B
+		ON A.w_pnum = B.item_no
+		LEFT OUTER JOIN
+			tb_hardness AS C
+		ON A.w_lot = C.h_wlot
+		WHERE A.w_date = #{w_date}
+	</select>
+	
+	<select id="heatTreatmentDuplicateChk" parameterType="productManage" resultType="productManage">
+		SELECT *
+		FROM tb_worklist
+		WHERE 1=1
+		AND w_lot = #{w_lot}
+	</select>
+	
+	<insert id="heatTreatmentSave" parameterType="productManage">
+		{
+			CALL sp_worklist_set
+			(#{w_date}, #{w_sdatetime}, #{w_edatetime}, #{w_pnum}, #{w_incnt}, #{w_weight},
+			#{w_in_edatetime}, #{w_lot}, #{h_val1}, #{h_val2}, #{h_val3},
+			#{page_code}, #{user_code},
+			CONCAT('작업LOT : ',#{w_lot},'삭제(tb_worklist, tb_workprddown, tb_hardness)'),
+			#{work_url},
+			'I')
+		}
+	</insert>
+	
+	<update id="heatTreatmentUpdate" parameterType="productManage">
+		{
+			CALL sp_worklist_set
+			(#{w_date}, #{w_sdatetime}, #{w_edatetime}, #{w_pnum}, #{w_incnt}, #{w_weight},
+			#{w_in_edatetime}, #{w_lot}, #{h_val1}, #{h_val2}, #{h_val3},
+			#{page_code}, #{user_code},
+			CONCAT('작업LOT : ',#{w_lot},'삭제(tb_worklist, tb_workprddown, tb_hardness)'),
+			#{work_url},
+			'U')
+		}
+	</update>
+	
+	<select id="heatTreatmentPumbunList" parameterType="productManage" resultType="productManage">
+		SELECT item_no AS w_pnum, item_name AS w_pname,
+			steel_grade AS w_gang, t_grade AS w_t_gb,
+			apply_temp1 AS w_qf, apply_temp2 AS w_tf,
+			apply_cp AS w_cp, std_load AS w_std_weight,
+			hardness_req AS w_hardness
+		FROM tb_standard
+		WHERE 1=1
+		<if test="w_pnum != null and w_pnum != ''">
+			AND item_no LIKE CONCAT('%',#{w_pnum},'%')
+		</if>
+		<if test="w_gang != null and w_gang != ''">
+			AND steel_grade LIKE CONCAT('%',#{w_gang},'%')
+		</if>
+		<if test="w_t_gb != null and w_t_gb != ''">
+			AND t_grade LIKE CONCAT('%',#{w_t_gb},'%')
+		</if>
+	</select>
+	
+	<update id="heatTreatmentDelete" parameterType="productManage">
+		{
+			CALL sp_worklist_set
+			(#{w_date}, #{w_sdatetime}, #{w_edatetime}, #{w_pnum}, #{w_incnt}, #{w_weight},
+			#{w_in_edatetime}, #{w_lot}, #{h_val1}, #{h_val2}, #{h_val3},
+			#{page_code}, #{user_code},
+			CONCAT('작업LOT : ',#{w_lot},'삭제(tb_worklist, tb_workprddown, tb_hardness)'),
+			#{work_url},
+			'D')
+		}
+	</update>
+	
+	<!-- 알람이력 -->
+	<select id="alarmRecordList" parameterType="productManage" resultType="productManage">
+		SELECT *
+		FROM v_alarmlist
+		WHERE 1=1
+		<if test="a_sdate != null and a_sdate != ''">
+			AND a_stime >= CONCAT(#{a_sdate},' 00:00:00')
+		</if>
+		<if test="a_edate != null and a_edate != ''">
+			AND a_stime <![CDATA[<=]]> CONCAT(#{a_edate},' 23:59:59')
+		</if>
+	</select>
+	
+	<!-- 알람발생빈도 -->
+	<select id="alarmFrequencyList" parameterType="productManage" resultType="productManage">
+		SELECT a_hogi, a_addr, a_desc, COUNT(*) AS a_cnt
+		FROM v_alarmlist
+		WHERE 1=1
+		AND a_stime >= CONCAT(#{a_sdate},' 00:00:00')
+		AND a_stime <![CDATA[<=]]> CONCAT(#{a_edate},' 23:59:59')
+		GROUP BY a_hogi, a_addr, a_desc 
+	</select>
+	
+	<!-- 종합생산현황 -->
+	<select id="integrationMonitoringList" resultType="productManage">
+		SELECT w_pnum AS m_pnum, w_pname AS m_pname,
+		w_intime AS m_intime, w_incnt AS m_incnt,
+		w_weight AS m_weight, w_std_weight AS m_std_weight,
+		ROUND((w_weight / w_std_weight) * 100,1) AS m_weight_percent
+		FROM (
+			SELECT machine AS w_machine, w_pnum, w_pname, SUM(in_diff) AS w_intime,
+				  SUM(w_incnt) AS w_incnt, SUM(w_weight) AS w_weight,
+				  SUM(std_load) AS w_std_weight
+			FROM (
+				SELECT machine, w_pnum, item_name AS w_pname, w_date, w_sdatetime, w_in_edatetime,
+					TIMESTAMPDIFF(MINUTE, w_sdatetime, w_in_edatetime) AS in_diff,
+					  w_incnt, ROUND(w_weight,1) AS w_weight, std_load
+				FROM tb_worklist AS A
+				LEFT OUTER JOIN
+				(
+					SELECT 'HT01' AS machine,
+					CASE WHEN CAST(LEFT(curtime(),2) AS INT) <![CDATA[<]]> 8 
+						 THEN DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY),'%Y-%m-%d 08:00:00')
+						 ELSE DATE_FORMAT(NOW(),'%Y-%m-%d 08:00:00')		 
+					END AS sdatetime,
+					DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') AS edatetime
+				) AS B
+				ON A.w_machine = B.machine
+				LEFT OUTER JOIN
+					tb_standard AS C
+				ON A.w_pnum = C.item_no
+				WHERE 1=1
+				AND A.w_sdatetime >= B.sdatetime
+				AND A.w_sdatetime <![CDATA[<=]]> B.edatetime
+			) AS A
+			GROUP BY machine, w_pnum, w_pname
+		) AS B	
+	</select>
+	
+</mapper>

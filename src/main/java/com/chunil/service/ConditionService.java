@@ -1,10 +1,13 @@
 package com.chunil.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.chunil.domain.Condition;
 import com.chunil.domain.CorrStatus;
 import com.chunil.domain.StandardData;
+import com.chunil.domain.TempCorrectionQue;
+import com.chunil.domain.Thermocouple;
 
 public interface ConditionService {
 	
@@ -60,4 +63,15 @@ public interface ConditionService {
     void standardDocSaves(Condition condition);
     
     void standardDocDel(Condition condition);
+    
+    
+  //열전대교체이력
+    List<Thermocouple> getThermocoupleList(String year);
+    
+    void thermocoupleSave(Thermocouple thermocouple);
+    
+    
+    List<TempCorrectionQue> getTempCorrectionQueList(String year);
+    
+    void updateTempCorrectionField(Map<String, Object> param);
 }

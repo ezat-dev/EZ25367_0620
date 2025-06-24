@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitoring">
+
+<select id="gettrend" parameterType="Monitoring" resultType="Monitoring">
+    SELECT
+      regtime,
+      hw_pv,
+      qf1_pv,
+      qf2_pv,
+      qf3_pv,
+      qf4_pv,
+      qf5_pv,
+      oil_cool_pv,
+      oil_heat_pv,
+      cp_a_pv,
+      cp_b_pv,
+      rw_pv,
+      tf1_pv,
+      tf2_pv,
+      tf3_pv,
+      tf4_pv,
+      tf5_pv,
+      cold_cool_pv,
+      cold_heat_pv,
+      hw_sp,
+      qf1_sp,
+      qf2_sp,
+      qf3_sp,
+      qf4_sp,
+      qf5_sp,
+      oil_cool_sp,
+      oil_heat_sp,
+      cp_a_sp,
+      cp_b_sp,
+      rw_sp,
+      tf1_sp,
+      tf2_sp,
+      tf3_sp,
+      tf4_sp,
+      tf5_sp,
+      cold_cool_sp,
+      cold_heat_sp,
+      qf_inv_pv,
+      qt_inv_pv,
+      cleaner1_inv_pv,
+      cleaner2_inv_pv,
+      tf_inv_pv,
+      agi_inv_pv,
+      qf_inv_sp,
+      qt_inv_sp,
+      cleaner1_inv_sp,
+      cleaner2_inv_sp,
+      tf_inv_sp,
+      agi_inv_sp
+    FROM tb_temp
+    WHERE regtime BETWEEN #{startDate} AND #{endDate}
+    ORDER BY regtime
+  </select>
+  
+  <!--  알람현황  -->
+	<select id="alarmList" resultType="monitoring"> 
+	SELECT * FROM v_alarmstate 
+	</select>
+</mapper>

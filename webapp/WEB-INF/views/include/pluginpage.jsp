@@ -119,6 +119,71 @@ $(function(){
 		
 });
 
+
+
+
+
+
+
+//오늘날짜 년-월-일
+function todayDate(){
+	var now = new Date();
+	var y = now.getFullYear();
+	var m = paddingZero(now.getMonth()+1);
+	var d = paddingZero(now.getDate());
+		
+	return y+"-"+m+"-"+d; 
+}
+
+//어제날짜 년-월-일
+function yesterDate(){
+	var now = new Date();
+	var y = now.getFullYear();
+	var m = paddingZero(now.getMonth()+1);
+	var d = paddingZero(now.getDate()-1);
+		
+	return y+"-"+m+"-"+d; 	
+}
+
+//현재시간
+function nowTime(){
+	var now = new Date();
+	var h = paddingZero(now.getHours());
+	var m = paddingZero(now.getMinutes());
+	var s = paddingZero(now.getSeconds());
+		
+	return h+":"+m+":"+s; 
+}
+
+//현재시간 +2
+function nowTimeAftertwo(){
+	var now = new Date();
+	var h = paddingZero(now.getHours()+2);
+	var m = paddingZero(now.getMinutes());
+	var s = paddingZero(now.getSeconds());
+		
+	return h+":"+m+":"+s; 
+}
+
+//왼쪽 0채우기
+function paddingZero(value){
+	var rtn = "";
+
+	if(value < 10){
+		rtn = "0"+value;
+	}else{
+		rtn = value;
+	}
+
+	return rtn;
+}
+
+
+
+
+
+
+
 //오늘날짜 년-월-일
 function todayDate(){
 	var now = new Date();
@@ -212,14 +277,15 @@ function pageObject(paramKey){
 			"b04":["/chunil/productionManagement/alarmFrequency","알람발생빈도"],
 			"b05":["/chunil/machine/spareStatus","SPARE 관리"],
 			"b06":["/chunil/productionManagement/heatTreatment","열처리 작업이력"],
-			"b07":"",
+			"b07":["/chunil/productionManagement/droppedGoods","낙하품관리"],
 			//조건관리
 			"c01":["/chunil/condition/standardData","기준정보관리"],
-			"c02":["/chunil/condition/machinePartTemp","열전대 교체이력"],
-			"c03":["/chunil/condition/machineLiquidManage","온도조절계 보정현황"],
+			//열전데 온도조절계 낙하품
+			"c02":["/chunil/condition/thermocoupleChange","열전대 교체이력"],
+			"c03":["/chunil/condition/tempCorrection","온도조절계 보정현황"],
 			"c04":["/chunil/condition/dailyCheck","일상점검일지"],
 			"c05":["/chunil/condition/standardDoc","관리계획서 및 작업 표준서"],
-			"c06":["/chunil/condition/inputProduct","낙하품 관리"],
+			"c06":"",
 			"c07":"",
 			//품질관리
 			"d01":["/chunil/quality/tusTest","온도균일성 조사보고서"],

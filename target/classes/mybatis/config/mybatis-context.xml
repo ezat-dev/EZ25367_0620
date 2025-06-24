@@ -20,5 +20,12 @@
   	<mapper resource="mybatis/mapper/standard.xml"/>
 
     <mapper resource="mybatis/mapper/quality.xml"/>
+    
+    <mapper resource="mybatis/mapper/droppedGoods.xml"/>
+
+    <!--  열처리 작업이력  -->
+	<mapper resource="mybatis/mapper/productManage.xml"/>
+
+    <mapper resource="mybatis/mapper/monitoring.xml"/>
   </mappers>
 </configuration>

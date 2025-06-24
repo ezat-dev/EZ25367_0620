@@ -1,6 +1,7 @@
 package com.chunil.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import com.chunil.dao.ConditionDao;
 import com.chunil.domain.Condition;
 import com.chunil.domain.CorrStatus;
 import com.chunil.domain.StandardData;
+import com.chunil.domain.TempCorrectionQue;
+import com.chunil.domain.Thermocouple;
 import com.chunil.domain.Work;
 
 
@@ -137,5 +140,25 @@ public class ConditionServiceImpl implements ConditionService {
     	conditionDao.standardDocDel(condition);
     }
 
+    //열전대교체이력
 
+  	@Override
+  	public List<Thermocouple> getThermocoupleList(String year){
+  		return conditionDao.getThermocoupleList(year);
+  	}
+  	
+  	@Override
+	public void thermocoupleSave(Thermocouple thermocouple) {
+		conditionDao.thermocoupleSave(thermocouple);
+	}
+
+  	
+  	@Override
+  	public List<TempCorrectionQue> getTempCorrectionQueList(String year) {
+  	    return conditionDao.getTempCorrectionQueList(year);
+  	}
+  	
+  	public void updateTempCorrectionField(Map<String, Object> param) {
+  		conditionDao.updateTempCorrectionField(param);
+  	}
 }

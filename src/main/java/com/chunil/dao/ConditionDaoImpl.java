@@ -1,6 +1,7 @@
 package com.chunil.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.chunil.domain.Condition;
 import com.chunil.domain.StandardData;
+import com.chunil.domain.TempCorrectionQue;
+import com.chunil.domain.Thermocouple;
 
 @Repository 
 public class ConditionDaoImpl implements ConditionDao {
@@ -144,5 +147,24 @@ public class ConditionDaoImpl implements ConditionDao {
     public void standardDocDel(Condition condition) {
     	sqlSession.delete("condition.standardDocDel",condition);
     }
+    //열전대교체이력
+  	@Override
+  	public List<Thermocouple> getThermocoupleList(String year) {
+  		return sqlSession.selectList("condition.getThermocoupleList", year);
+  	}
+  	
+  	@Override
+	public void thermocoupleSave(Thermocouple thermocouple) {
+		sqlSession.update("condition.thermocoupleSave",thermocouple);
+	}
+  	
+  	@Override
+  	public List<TempCorrectionQue> getTempCorrectionQueList(String year) {
+  		return sqlSession.selectList("condition.getTempCorrectionQueList", year);
+  	}
+  	
+  	public void updateTempCorrectionField(Map<String, Object> param) {
+  		sqlSession.update("condition.updateTempCorrectionField",param);
+  	}
 
 }

@@ -29,4 +29,8 @@ public interface QualityDAO {
     void saveFproof(Map<String, Object> param);
     
     void delFproof(Quality quality);
+    
+	Quality cpkStandardList(Quality quality);
+
+	List<Quality> cpkValueList(Quality quality);
 }
