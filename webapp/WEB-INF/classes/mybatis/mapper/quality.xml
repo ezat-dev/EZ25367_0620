@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="quality">
+
+	<select id="getqualityList" parameterType="Quality" resultType="Quality">
+	    SELECT *
+	    FROM tb_tustest
+	    <where>
+	        <if test="t_year != null and t_year != ''">
+	            AND t_year = #{t_year}
+	        </if>
+	    </where>
+	    ORDER BY id ASC
+	</select>
+
+
+	<insert id="savetusTest" parameterType="Quality">
+	    INSERT INTO tb_tustest (
+	        id, mch_name, t_year, t_month, t_url, t_ok,
+	        t_gb, t_day
+	    ) VALUES (
+	        #{id}, #{mch_name}, #{t_year}, #{t_month}, #{t_url}, #{t_ok},
+	        #{t_gb}, #{t_day}
+	    )
+	    ON DUPLICATE KEY UPDATE
+	        mch_name = VALUES(mch_name),
+	        t_year = VALUES(t_year),
+	        t_month = VALUES(t_month),
+	        t_url = VALUES(t_url),
+	        t_ok = VALUES(t_ok),
+	        t_gb = VALUES(t_gb),
+	        t_day = VALUES(t_day)
+
+	</insert>
+
+
+    <!-- 3. deltusTest: id 기준으로 삭제 -->
+    <delete id="deltusTest" parameterType="Quality">
+        DELETE FROM tb_tustest
+        WHERE id = #{id}
+    </delete>
+    
+    
+    <select id="getHeatTreatingOil" parameterType="Quality" resultType="Quality">
+    SELECT *
+    FROM tb_heattreatingoil
+    <where>
+        <if test="t_year != null and t_year != ''">
+            AND year = #{t_year}
+        </if>
+    </where>
+    ORDER BY id ASC
+	</select>
+	
+	
+    <insert id="saveHeatTreatingOil" parameterType="Quality">
+    INSERT INTO tb_heattreatingoil (
+        id, year, y_month, tx1, tx2, tx3, tx4
+    ) VALUES (
+        #{id}, #{year}, #{y_month}, #{tx1}, #{tx2}, #{tx3}, #{tx4}
+    )
+    ON DUPLICATE KEY UPDATE
+        year = VALUES(year),
+        y_month = VALUES(y_month),
+        tx1 = VALUES(tx1),
+        tx2 = VALUES(tx2),
+        tx3 = VALUES(tx3),
+        tx4 = VALUES(tx4)
+	</insert>
+    
+    
+    <update id="delHeatTreatingOil" parameterType="Quality">
+    UPDATE tb_heattreatingoil
+    SET
+        tx1 = '',
+        tx2 = '',
+        tx3 = '',
+        tx4 = ''
+    WHERE id = #{id}
+	</update>
+	
+    
+   <select id="getFproof" parameterType="Quality" resultType="Quality">
+        SELECT *
+        FROM tb_f_proof
+        <where>
+            <if test="y_m != null and y_m != ''">
+                AND y_m = #{y_m}
+            </if>
+        </where>
+        ORDER BY id ASC
+    </select>
+    
+     <update id="saveFproof" parameterType="Quality">
+        UPDATE tb_f_proof
+        SET ${column} = #{value}
+        WHERE id = #{id}
+    </update>
+    
+    <update id="delFproof" parameterType="Quality">
+        UPDATE tb_f_proof
+        SET
+            y_m       = '',
+            mch_name  = '',
+            standard  = '',
+            up_down   = '',
+            m_1  = '', m_2  = '', m_3  = '', m_4  = '', m_5  = '',
+            m_6  = '', m_7  = '', m_8  = '', m_9  = '', m_10 = '',
+            m_11 = '', m_12 = '', m_13 = '', m_14 = '', m_15 = '',
+            m_16 = '', m_17 = '', m_18 = '', m_19 = '', m_20 = '',
+            m_21 = '', m_22 = '', m_23 = '', m_24 = '', m_25 = '',
+            m_26 = '', m_27 = '', m_28 = '', m_29 = '', m_30 = '',
+            m_31 = ''
+        WHERE id = #{id}
+    </update>
+    
+    
+    <select id="cpkStandardList" parameterType="quality" resultType="quality">
+     SELECT item_no AS h_pnum, item_name AS h_pname, steel_grade AS h_gang, t_grade AS h_t_gb, SUBSTRING_INDEX(hardness_req,'~',1) AS h_hard_dw, SUBSTRING_INDEX(hardness_req,'~',-1) AS h_hard_up FROM tb_standard WHERE item_no = #{h_pnum} </select>
+	<select id="cpkValueList" parameterType="quality" resultType="quality">
+	SELECT *, (h_max - h_min) AS h_range FROM ( SELECT h_pnum, ROUND(h_val1,2) AS h_x1, ROUND(h_val2,2) AS h_x2, ROUND(h_val3,2) AS h_x3, h_regdate, h_regtime, DATE_FORMAT(h_regdate,'%m/%d') AS h_day, LEFT(h_regtime,5) AS h_time, SUBSTRING_INDEX(hardness_req,'~',1) AS h_hard_dw, SUBSTRING_INDEX(hardness_req,'~',-1) AS h_hard_up, ROUND(( (CASE WHEN h_val1 != 0 THEN h_val1 ELSE 0 END) + (CASE WHEN h_val2 != 0 THEN h_val2 ELSE 0 END) + (CASE WHEN h_val3 != 0 THEN h_val3 ELSE 0 END) ) / NULLIF( (CASE WHEN h_val1 != 0 THEN 1 ELSE 0 END) + (CASE WHEN h_val2 != 0 THEN 1 ELSE 0 END) + (CASE WHEN h_val3 != 0 THEN 1 ELSE 0 END), 0 ),2) AS h_avg, ROUND(CASE WHEN h_val1 = 0 THEN GREATEST(h_val2, h_val3) WHEN h_val2 = 0 THEN GREATEST(h_val1, h_val3) WHEN h_val3 = 0 THEN GREATEST(h_val1, h_val2) ELSE GREATEST(h_val1, h_val2, h_val3) END,2) AS h_max, ROUND(CASE WHEN h_val1 = 0 THEN LEAST(h_val2, h_val3) WHEN h_val2 = 0 THEN LEAST(h_val1, h_val3) WHEN h_val3 = 0 THEN LEAST(h_val1, h_val2) ELSE LEAST(h_val1, h_val2, h_val3) END,2) AS h_min FROM tb_hardness A INNER JOIN tb_standard B ON A.h_pnum = B.item_no WHERE 1=1 AND A.h_regdate >= #{h_sdate} AND A.h_regdate
+	<![CDATA[ <= ]]>
+	#{h_edate} AND A.h_pnum = #{h_pnum} ) AS AA LIMIT 30
+	</select>
+</mapper>

@@ -81,7 +81,10 @@
 	    transform: translateY(-2px);
 	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 	}
-	
+	.tkLogo {
+    width: 180px;
+    height: 60px;
+}
 	.menuDivTab.active {
 	     background: #dfe6ed; /* 연한 회색 배경 */
 	    color: #333; /* 글자색은 기본 유지 */
@@ -151,7 +154,7 @@
         <nav class="nav">
             <div>
             <div class="nav__brand">
-                 <a href="#" class="nav__logo"><img class="tkLogo" src="/chunil/css/sideBar/jinhap4.gif"></a>
+                 <a href="#" class="nav__logo"><img class="tkLogo" src="/chunil/css/sideBar/logo.png"></a>
             </div>
 			<div class="nav__list">
 <!--  a1 ~ a7 -->
